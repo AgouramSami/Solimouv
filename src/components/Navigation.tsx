@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import UserMenu from "./UserMenu";
 
 const links = [
   { href: "/", label: "Accueil" },
@@ -57,9 +58,7 @@ export default function Navigation() {
           ))}
         </ul>
 
-        <Link href="/programme" className="btn-primary hidden text-sm md:inline-flex">
-          Je participe
-        </Link>
+        <UserMenu />
 
         {/* Mobile burger */}
         <button

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -25,17 +26,16 @@ export default function Navigation() {
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 text-xl font-bold text-brand-primary"
+          className="flex items-center"
           aria-label="Solimouv' — accueil"
         >
-          {/* DA : remplacer ce SVG par le logo officiel */}
-          <span
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-primary text-sm font-black text-white"
-            aria-hidden="true"
-          >
-            S
-          </span>
-          <span>Solimouv&apos;</span>
+          <Image
+            src="/logo.svg"
+            alt="Solimouv'"
+            width={160}
+            height={28}
+            priority
+          />
         </Link>
 
         {/* Desktop nav */}

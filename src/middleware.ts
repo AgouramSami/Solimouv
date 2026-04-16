@@ -38,7 +38,15 @@ export async function middleware(request: NextRequest) {
     return supabaseResponse;
   }
 
-  const { pathname } = request.nextUrl;
+  const { pathname, searchParams } = request.nextUrl;
+
+  // Supabase renvoie parfois le code sur / au lieu de /auth/callback
+  // → on intercepte et on redirige correctement
+  if (pathname === "/" && searchParams.has("code")) {
+    const callbackUrl = new URL("/auth/callback", request.url);
+    callbackUrl.searchParams.set("code", searchParams.get("code")!);
+    return NextResponse.redirect(callbackUrl);
+  }
 
   // Onboarding nécessite d'être connecté
   if (pathname.startsWith("/onboarding") && !user) {

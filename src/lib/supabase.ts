@@ -2,9 +2,9 @@ import { createClient } from "@supabase/supabase-js";
 
 // DCX : créer le projet sur supabase.com et renseigner ces variables dans .env.local
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Types de base — DCX : à étendre selon les briques choisies
 export type Atelier = {

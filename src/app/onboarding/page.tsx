@@ -6,40 +6,54 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 
 const PROFILS = [
-  { id: "famille",  label: "Famille",              emoji: "👨‍👩‍👧‍👦" },
-  { id: "jeune",    label: "Jeune",                emoji: "🧑" },
-  { id: "senior",   label: "Senior",               emoji: "👴" },
-  { id: "refugie",  label: "Personne réfugiée",    emoji: "🌍" },
-  { id: "lgbtqia",  label: "Communauté LGBTQIA+",  emoji: "🏳️‍🌈" },
-  { id: "handicap", label: "Situation de handicap", emoji: "♿" },
-  { id: "autre",    label: "Autre",                emoji: "👋" },
+  { id: "famille",  label: "Famille",                emoji: "👨‍👩‍👧‍👦" },
+  { id: "jeune",    label: "Jeune",                  emoji: "🧑" },
+  { id: "senior",   label: "Senior",                 emoji: "👴" },
+  { id: "refugie",  label: "Personne réfugiée",      emoji: "🌍" },
+  { id: "lgbtqia",  label: "Communauté LGBTQIA+",    emoji: "🏳️‍🌈" },
+  { id: "handicap", label: "Situation de handicap",  emoji: "♿" },
+  { id: "autre",    label: "Autre",                  emoji: "👋" },
 ];
 
 const SPORTS = [
-  { id: "foot",       label: "Football",          emoji: "⚽" },
-  { id: "basket",     label: "Basketball",        emoji: "🏀" },
-  { id: "yoga",       label: "Yoga",              emoji: "🧘" },
-  { id: "boxe",       label: "Boxe",              emoji: "🥊" },
-  { id: "natation",   label: "Natation",          emoji: "🏊" },
-  { id: "danse",      label: "Danse",             emoji: "💃" },
-  { id: "athletisme", label: "Athlétisme",        emoji: "🏃" },
-  { id: "handisport", label: "Handisport",        emoji: "🏅" },
+  { id: "foot",          label: "Football",       emoji: "⚽" },
+  { id: "basket",        label: "Basketball",     emoji: "🏀" },
+  { id: "yoga",          label: "Yoga",           emoji: "🧘" },
+  { id: "boxe",          label: "Boxe",           emoji: "🥊" },
+  { id: "natation",      label: "Natation",       emoji: "🏊" },
+  { id: "danse",         label: "Danse",          emoji: "💃" },
+  { id: "athletisme",    label: "Athlétisme",     emoji: "🏃" },
+  { id: "handisport",    label: "Handisport",     emoji: "🏅" },
   { id: "arts_martiaux", label: "Arts martiaux",  emoji: "🥋" },
-  { id: "cyclisme",   label: "Cyclisme",          emoji: "🚴" },
+  { id: "cyclisme",      label: "Cyclisme",       emoji: "🚴" },
 ];
 
-type Step = 1 | 2 | 3;
+const NIVEAUX = [
+  { id: "decouverte", label: "Découverte",    emoji: "🌱", desc: "Je n'ai jamais pratiqué" },
+  { id: "debutant",   label: "Débutant·e",   emoji: "🌟", desc: "Je débute, j'apprends" },
+  { id: "intermediaire", label: "Intermédiaire", emoji: "💪", desc: "Je pratique régulièrement" },
+  { id: "avance",     label: "Avancé·e",     emoji: "🏆", desc: "Je maîtrise bien" },
+];
+
+const DYNAMIQUES = [
+  { id: "solo",    label: "Seul·e",   emoji: "🙋", desc: "Je viens découvrir à mon rythme" },
+  { id: "groupe",  label: "En groupe", emoji: "👥", desc: "Avec des amis ou collègues" },
+  { id: "famille", label: "En famille", emoji: "👨‍👩‍👧", desc: "Avec des enfants" },
+];
+
+const TOTAL_STEPS = 5;
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const [step, setStep] = useState<Step>(1);
-  const [profil, setProfil] = useState<string>("");
+  const [step, setStep] = useState(1);
+  const [profil, setProfil] = useState("");
   const [sports, setSports] = useState<string[]>([]);
+  const [niveau, setNiveau] = useState("");
+  const [dynamique, setDynamique] = useState("");
   const [saving, setSaving] = useState(false);
   const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
   const [installed, setInstalled] = useState(false);
 
-  // Capture PWA install prompt
   useEffect(() => {
     const handler = (e: Event) => {
       e.preventDefault();
@@ -66,14 +80,19 @@ export default function OnboardingPage() {
   async function finish() {
     setSaving(true);
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (user) {
       await supabase.from("user_profiles").upsert({
         id: user.id,
         public_cible: profil,
         sports_interests: sports,
+        niveau,
+        dynamique,
         onboarded: true,
+        updated_at: new Date().toISOString(),
       });
     }
     router.push("/");
@@ -83,12 +102,22 @@ export default function OnboardingPage() {
     <div className="flex min-h-screen flex-col bg-brand-dark text-white">
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4">
-        <Image src="/logo.svg" alt="Solimouv'" width={140} height={24} className="brightness-0 invert" />
-        <div className="flex gap-1.5" aria-label={`Étape ${step} sur 3`}>
-          {([1, 2, 3] as Step[]).map((s) => (
+        <Image
+          src="/logo.svg"
+          alt="Solimouv'"
+          width={140}
+          height={24}
+          className="brightness-0 invert"
+        />
+        {/* Barre de progression */}
+        <div
+          className="flex gap-1.5"
+          aria-label={`Étape ${step} sur ${TOTAL_STEPS}`}
+        >
+          {Array.from({ length: TOTAL_STEPS }, (_, i) => i + 1).map((s) => (
             <div
               key={s}
-              className={`h-1.5 w-8 rounded-full transition-all ${
+              className={`h-1.5 w-6 rounded-full transition-all duration-300 ${
                 s <= step ? "bg-brand-primary" : "bg-white/20"
               }`}
             />
@@ -96,11 +125,11 @@ export default function OnboardingPage() {
         </div>
       </div>
 
-      {/* Étape 1 — Profil */}
+      {/* ── Étape 1 — Profil ── */}
       {step === 1 && (
         <div className="flex flex-1 flex-col px-6 py-8">
           <p className="text-sm font-semibold uppercase tracking-wider text-brand-primary">
-            Étape 1 / 3
+            Étape 1 / {TOTAL_STEPS}
           </p>
           <h1 className="font-heading mt-3 text-3xl font-bold leading-tight">
             Qui êtes-vous ?
@@ -121,8 +150,12 @@ export default function OnboardingPage() {
                   }`}
                   aria-pressed={profil === p.id}
                 >
-                  <span className="text-3xl" role="img" aria-label={p.label}>{p.emoji}</span>
-                  <span className="text-xs font-medium text-center leading-tight">{p.label}</span>
+                  <span className="text-3xl" role="img" aria-label={p.label}>
+                    {p.emoji}
+                  </span>
+                  <span className="text-xs font-medium leading-tight text-center">
+                    {p.label}
+                  </span>
                 </button>
               </li>
             ))}
@@ -138,11 +171,11 @@ export default function OnboardingPage() {
         </div>
       )}
 
-      {/* Étape 2 — Sports */}
+      {/* ── Étape 2 — Sports ── */}
       {step === 2 && (
         <div className="flex flex-1 flex-col px-6 py-8">
           <p className="text-sm font-semibold uppercase tracking-wider text-brand-primary">
-            Étape 2 / 3
+            Étape 2 / {TOTAL_STEPS}
           </p>
           <h1 className="font-heading mt-3 text-3xl font-bold leading-tight">
             Vos sports préférés ?
@@ -151,7 +184,7 @@ export default function OnboardingPage() {
             Sélectionnez autant que vous voulez.
           </p>
 
-          <ul className="mt-8 grid grid-cols-2 gap-3" role="list">
+          <ul className="mt-6 grid grid-cols-2 gap-3" role="list">
             {SPORTS.map((s) => (
               <li key={s.id}>
                 <button
@@ -163,14 +196,16 @@ export default function OnboardingPage() {
                   }`}
                   aria-pressed={sports.includes(s.id)}
                 >
-                  <span className="text-2xl" role="img" aria-label={s.label}>{s.emoji}</span>
+                  <span className="text-2xl" role="img" aria-label={s.label}>
+                    {s.emoji}
+                  </span>
                   <span className="text-sm font-medium">{s.label}</span>
                 </button>
               </li>
             ))}
           </ul>
 
-          <div className="mt-auto flex gap-3">
+          <div className="mt-auto flex gap-3 pt-4">
             <button onClick={() => setStep(1)} className="btn-secondary flex-1">
               ← Retour
             </button>
@@ -181,11 +216,121 @@ export default function OnboardingPage() {
         </div>
       )}
 
-      {/* Étape 3 — Installer l'app */}
+      {/* ── Étape 3 — Niveau ── */}
       {step === 3 && (
+        <div className="flex flex-1 flex-col px-6 py-8">
+          <p className="text-sm font-semibold uppercase tracking-wider text-brand-primary">
+            Étape 3 / {TOTAL_STEPS}
+          </p>
+          <h1 className="font-heading mt-3 text-3xl font-bold leading-tight">
+            Votre niveau ?
+          </h1>
+          <p className="mt-2 text-gray-400">
+            Pas de jugement — c&apos;est pour adapter les propositions.
+          </p>
+
+          <ul className="mt-8 space-y-3" role="list">
+            {NIVEAUX.map((n) => (
+              <li key={n.id}>
+                <button
+                  onClick={() => setNiveau(n.id)}
+                  className={`flex w-full items-center gap-4 rounded-2xl border-2 px-5 py-4 text-left transition-all ${
+                    niveau === n.id
+                      ? "border-brand-primary bg-brand-primary/10"
+                      : "border-white/10 bg-white/5 hover:border-white/30"
+                  }`}
+                  aria-pressed={niveau === n.id}
+                >
+                  <span className="text-3xl" role="img" aria-label={n.label}>
+                    {n.emoji}
+                  </span>
+                  <div>
+                    <p className="font-semibold">{n.label}</p>
+                    <p className="text-sm text-gray-400">{n.desc}</p>
+                  </div>
+                  {niveau === n.id && (
+                    <span className="ml-auto text-brand-primary text-xl">✓</span>
+                  )}
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-auto flex gap-3 pt-4">
+            <button onClick={() => setStep(2)} className="btn-secondary flex-1">
+              ← Retour
+            </button>
+            <button
+              onClick={() => setStep(4)}
+              disabled={!niveau}
+              className="btn-primary flex-1 disabled:opacity-40"
+            >
+              Continuer →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Étape 4 — Dynamique ── */}
+      {step === 4 && (
+        <div className="flex flex-1 flex-col px-6 py-8">
+          <p className="text-sm font-semibold uppercase tracking-wider text-brand-primary">
+            Étape 4 / {TOTAL_STEPS}
+          </p>
+          <h1 className="font-heading mt-3 text-3xl font-bold leading-tight">
+            Vous venez comment ?
+          </h1>
+          <p className="mt-2 text-gray-400">
+            Pour vous orienter vers les meilleures activités.
+          </p>
+
+          <ul className="mt-8 space-y-3" role="list">
+            {DYNAMIQUES.map((d) => (
+              <li key={d.id}>
+                <button
+                  onClick={() => setDynamique(d.id)}
+                  className={`flex w-full items-center gap-4 rounded-2xl border-2 px-5 py-4 text-left transition-all ${
+                    dynamique === d.id
+                      ? "border-brand-secondary bg-brand-secondary/10"
+                      : "border-white/10 bg-white/5 hover:border-white/30"
+                  }`}
+                  aria-pressed={dynamique === d.id}
+                >
+                  <span className="text-3xl" role="img" aria-label={d.label}>
+                    {d.emoji}
+                  </span>
+                  <div>
+                    <p className="font-semibold">{d.label}</p>
+                    <p className="text-sm text-gray-400">{d.desc}</p>
+                  </div>
+                  {dynamique === d.id && (
+                    <span className="ml-auto text-brand-secondary text-xl">✓</span>
+                  )}
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-auto flex gap-3 pt-4">
+            <button onClick={() => setStep(3)} className="btn-secondary flex-1">
+              ← Retour
+            </button>
+            <button
+              onClick={() => setStep(5)}
+              disabled={!dynamique}
+              className="btn-primary flex-1 disabled:opacity-40"
+            >
+              Continuer →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Étape 5 — Installer l'app ── */}
+      {step === 5 && (
         <div className="flex flex-1 flex-col items-center justify-center px-6 py-8 text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-brand-primary">
-            Étape 3 / 3
+            Étape 5 / {TOTAL_STEPS}
           </p>
 
           {installed ? (
@@ -195,7 +340,8 @@ export default function OnboardingPage() {
                 App installée !
               </h1>
               <p className="mt-3 text-gray-400">
-                Retrouvez Solimouv&apos; directement depuis votre écran d&apos;accueil.
+                Retrouvez Solimouv&apos; directement depuis votre écran
+                d&apos;accueil.
               </p>
             </>
           ) : (
@@ -211,13 +357,19 @@ export default function OnboardingPage() {
 
               <div className="mt-8 w-full space-y-3">
                 {installPrompt ? (
-                  <button onClick={handleInstall} className="btn-primary w-full text-base">
+                  <button
+                    onClick={handleInstall}
+                    className="btn-primary w-full text-base"
+                  >
                     Ajouter à l&apos;écran d&apos;accueil
                   </button>
                 ) : (
                   <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-gray-400">
                     <p className="font-medium text-white">Sur iOS Safari :</p>
-                    <p className="mt-1">Appuyez sur <strong>Partager</strong> puis <strong>"Sur l'écran d'accueil"</strong></p>
+                    <p className="mt-1">
+                      Appuyez sur <strong>Partager</strong> puis{" "}
+                      <strong>&quot;Sur l&apos;écran d&apos;accueil&quot;</strong>
+                    </p>
                   </div>
                 )}
               </div>
@@ -226,7 +378,10 @@ export default function OnboardingPage() {
 
           <div className="mt-auto flex w-full gap-3 pt-8">
             {!installed && (
-              <button onClick={() => setStep(2)} className="btn-secondary flex-1 text-sm">
+              <button
+                onClick={() => setStep(4)}
+                className="btn-secondary flex-1 text-sm"
+              >
                 ← Retour
               </button>
             )}
@@ -235,7 +390,11 @@ export default function OnboardingPage() {
               disabled={saving}
               className="btn-primary flex-1 disabled:opacity-60"
             >
-              {saving ? "Chargement…" : installed ? "Allons-y ! 🎉" : "Passer cette étape →"}
+              {saving
+                ? "Chargement…"
+                : installed
+                ? "Allons-y ! 🎉"
+                : "Passer cette étape →"}
             </button>
           </div>
         </div>

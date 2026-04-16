@@ -5,6 +5,15 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import UserMenu from "./UserMenu";
+import { Home, Info, Calendar, Users, Mail } from "lucide-react";
+
+const mobileLinks = [
+  { href: "/",            icon: Home,     label: "Accueil" },
+  { href: "/programme",   icon: Calendar, label: "Programme" },
+  { href: "/associations",icon: Users,    label: "Associations" },
+  { href: "/a-propos",    icon: Info,     label: "À propos" },
+  { href: "/contact",     icon: Mail,     label: "Contact" },
+];
 
 const links = [
   { href: "/", label: "Accueil" },
@@ -19,6 +28,7 @@ export default function Navigation() {
   const [open, setOpen] = useState(false);
 
   return (
+    <>
     <header className="sticky top-0 z-40 border-b border-gray-100 bg-white/90 backdrop-blur-md">
       <nav
         className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3"
@@ -108,5 +118,29 @@ export default function Navigation() {
         </div>
       )}
     </header>
+
+    {/* Mobile : bottom bar — pattern PWA natif */}
+    <nav
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around border-t border-gray-100 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-sm"
+      aria-label="Navigation principale"
+    >
+      {mobileLinks.map(({ href, icon: Icon, label }) => {
+        const isActive = pathname === href;
+        return (
+          <Link
+            key={href}
+            href={href}
+            className={`flex min-h-[56px] min-w-[56px] flex-col items-center justify-center gap-0.5 px-2 py-1.5 text-[10px] font-medium transition-colors ${
+              isActive ? "text-brand-primary" : "text-gray-400"
+            }`}
+            aria-current={isActive ? "page" : undefined}
+          >
+            <Icon className="h-5 w-5" aria-hidden="true" />
+            <span>{label}</span>
+          </Link>
+        );
+      })}
+    </nav>
+    </>
   );
 }

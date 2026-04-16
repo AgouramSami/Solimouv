@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FestivalMap } from "@/components/map/FestivalMap";
+import { FreeBadge } from "@/components/shared/FreeBadge";
+import { SafeBadge } from "@/components/shared/SafeBadge";
+import { Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Solimouv' — Le festival du sport pour tous",
@@ -71,14 +75,21 @@ export default function HomePage() {
             </span>
           </div>
 
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <FreeBadge />
+            <SafeBadge />
+          </div>
+
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link href="/programme" className="btn-primary text-base">
+            <Link href="/quiz" className="btn-primary flex items-center gap-2 text-base">
+              <Sparkles className="h-5 w-5" aria-hidden="true" />
+              Trouve ton sport
+            </Link>
+            <Link href="/programme" className="btn-secondary text-base">
               Voir le programme
             </Link>
-            <Link href="/a-propos" className="btn-secondary text-base">
-              En savoir plus
-            </Link>
           </div>
+          <p className="mt-3 text-sm text-gray-400">Pas besoin de compte pour explorer !</p>
         </div>
       </section>
 
@@ -96,6 +107,17 @@ export default function HomePage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Carte interactive */}
+      <section className="px-4 py-12 md:py-16 bg-brand-light" aria-labelledby="map-title">
+        <div className="mx-auto max-w-5xl">
+          <h2 id="map-title" className="section-title text-center mb-2">
+            Plan du festival
+          </h2>
+          <p className="text-center text-gray-500 mb-8">Clique sur une zone pour voir les activités</p>
+          <FestivalMap />
         </div>
       </section>
 

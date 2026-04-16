@@ -85,6 +85,7 @@ export default function OnboardingPage() {
     } = await supabase.auth.getUser();
 
     if (user) {
+      // 1. Sauvegarde Supabase
       await supabase.from("user_profiles").upsert({
         id: user.id,
         public_cible: profil,
@@ -94,7 +95,31 @@ export default function OnboardingPage() {
         onboarded: true,
         updated_at: new Date().toISOString(),
       });
+
+      // 2. Envoi vers Make — newsletter personnalisée
+      const webhookUrl = process.env.NEXT_PUBLIC_MAKE_WEBHOOK_URL;
+      if (webhookUrl) {
+        const meta = user.user_metadata ?? {};
+        // Toutes les réponses dans une seule case, séparées par virgule
+        const reponses = [profil, ...sports, niveau, dynamique]
+          .filter(Boolean)
+          .join(", ");
+
+        await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: user.email ?? "",
+            nom: meta.last_name ?? meta.name?.split(" ").slice(-1)[0] ?? "",
+            prenom: meta.first_name ?? meta.full_name?.split(" ")[0] ?? meta.name?.split(" ")[0] ?? "",
+            reponses,
+          }),
+        }).catch(() => {
+          // Erreur webhook non bloquante
+        });
+      }
     }
+
     router.push("/");
   }
 

@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-const BASE_URL = "https://solimouv.fr"; // ← à mettre à jour après déploiement
+const BASE_URL = "https://solimouv-git-vercel-react-server-70cd75-samis-projects-8dc87455.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

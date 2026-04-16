@@ -21,7 +21,7 @@ const fredoka = Fredoka({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://solimouv.fr"), // ← à mettre à jour après déploiement
+  metadataBase: new URL("https://solimouv-git-vercel-react-server-70cd75-samis-projects-8dc87455.vercel.app"), // ← à mettre à jour après déploiement
   title: {
     default: "Solimouv' — Le festival du sport pour tous",
     template: "%s | Solimouv'",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "fr_FR",
-    url: "https://solimouv.fr",
+    url: "https://solimouv-git-vercel-react-server-70cd75-samis-projects-8dc87455.vercel.app",
     siteName: "Solimouv'",
     title: "Solimouv' — Le festival du sport pour tous",
     description:
@@ -98,7 +98,7 @@ export default function RootLayout({
               "@type": "Organization",
               name: "Up Sport!",
               url: "https://www.unispourlesport.paris/",
-              logo: "https://solimouv.fr/icons/icon-512.png",
+              logo: "https://solimouv-git-vercel-react-server-70cd75-samis-projects-8dc87455.vercel.app/icons/icon-512.png",
               sameAs: [
                 "https://www.instagram.com/unispourlesport/",
                 "https://www.facebook.com/UpSport.UNis/",

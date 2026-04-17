@@ -49,12 +49,12 @@ export default function Footer() {
           {/* Navigation */}
           <nav aria-label="Navigation secondaire">
             <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
-              Navigation
+              Application
             </p>
             <ul className="space-y-2 text-sm" role="list">
               {[
-                { href: "/a-propos", label: "À propos" },
-                { href: "/programme", label: "Programme" },
+                { href: "/auth/login", label: "Se connecter" },
+                { href: "/home", label: "Programme" },
                 { href: "/associations", label: "Associations" },
                 { href: "/contact", label: "Contact" },
               ].map((link) => (

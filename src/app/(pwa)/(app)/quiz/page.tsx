@@ -8,7 +8,7 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState<QuizAnswers | null>(null);
 
   return (
-    <div className="min-h-screen bg-brand-light py-8">
+    <div className="min-h-screen bg-white">
       {!answers ? (
         <SportQuiz onComplete={setAnswers} />
       ) : (

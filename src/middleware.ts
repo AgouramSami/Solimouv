@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 // Routes app PWA — nécessitent d'être connecté
-const APP_ROUTES = ["/home", "/compte", "/parametres", "/onboarding", "/admin", "/quiz"];
+const APP_ROUTES = ["/home", "/compte", "/parametres", "/onboarding", "/admin", "/quiz", "/associations", "/a-propos", "/contact"];
 
 export async function middleware(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

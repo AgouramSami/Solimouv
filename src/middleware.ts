@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 // Routes app PWA — nécessitent d'être connecté
-const APP_ROUTES = ["/home", "/compte", "/parametres", "/onboarding", "/admin", "/quiz", "/associations", "/a-propos", "/contact"];
+const APP_ROUTES = ["/home", "/compte", "/parametres", "/onboarding", "/admin", "/quiz", "/associations", "/a-propos", "/contact", "/programme"];
 
 export async function middleware(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -55,12 +55,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/home", request.url));
   }
 
-  // PWA installée lancée depuis l'écran d'accueil (sec-fetch-site: none)
-  // → si l'utilisateur atterrit sur / dans la PWA, rediriger vers l'app
-  const isPwaLaunch =
-    request.headers.get("sec-fetch-site") === "none" &&
-    request.headers.get("sec-fetch-mode") === "navigate";
-  if (pathname === "/" && isPwaLaunch) {
+  // / → toujours rediriger vers l'app ou le login
+  if (pathname === "/") {
     return NextResponse.redirect(
       new URL(user ? "/home" : "/auth/login", request.url)
     );

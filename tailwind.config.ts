@@ -11,14 +11,14 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          // Palette festival — extrait de la direction DA (screenshot 16/04)
-          // DA : ajustez librement ces valeurs pour coller au livrable Figma
-          primary:   "#FF2D9B", // Fuchsia/magenta — énergie, inclusivité
-          secondary: "#CDFF00", // Vert citron (Citric) — jeunesse, nature
-          blue:      "#2828FF", // Klein Blue — profondeur, confiance
-          orange:    "#FF6B1A", // Tangerine — sport, chaleur
-          dark:      "#050303", // Near-black (Freepik palette)
-          light:     "#F5F5F0", // Off-white
+          // Palette officielle — extraite du Figma SoliMouv (17/04/2026)
+          primary:   "#D81D61", // Rose — couleur principale, CTAs
+          secondary: "#474194", // Violet — navbar, états sélectionnés, UI
+          blue:      "#1F74BB", // Bleu — tags, badges informatifs
+          red:       "#C11720", // Rouge — alertes, tags "Senior"
+          green:     "#2E7E33", // Vert — succès, tags "Débutant"
+          dark:      "#050505", // Noir — textes, bouton Primary
+          light:     "#FFFFFF", // Blanc — fonds, surfaces
         },
       },
       fontFamily: {

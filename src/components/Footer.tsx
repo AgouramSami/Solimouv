@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Image src="/logo.svg" alt="Solimouv'" width={140} height={24} className="brightness-0 invert" />
+            <Image src="/figma-assets/logo.png" alt="Solimouv'" width={140} height={24} className="brightness-0 invert" />
             <p className="mt-2 text-sm text-gray-400">
               Le festival du sport pour tous, organisé par Up Sport! et un collectif
               d&apos;associations parisiennes.

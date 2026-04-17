@@ -22,17 +22,19 @@
 
 ## Stack technique
 
-| Couche | Outil | Version |
-|---|---|---|
-| Framework | Next.js (App Router) | 15 |
-| Langage | TypeScript | 5 |
-| Styling | Tailwind CSS | 3 |
-| Animations | Framer Motion | 12 |
-| PWA | @ducanh2912/next-pwa | 10 |
-| Base de données + Auth | Supabase (PostgreSQL) | 2 |
-| Hosting | Vercel | — |
-| Automation | Make.com | — |
-| Icônes | Lucide React | 1 |
+
+| Couche                 | Outil                 | Version |
+| ---------------------- | --------------------- | ------- |
+| Framework              | Next.js (App Router)  | 15      |
+| Langage                | TypeScript            | 5       |
+| Styling                | Tailwind CSS          | 3       |
+| Animations             | Framer Motion         | 12      |
+| PWA                    | @ducanh2912/next-pwa  | 10      |
+| Base de données + Auth | Supabase (PostgreSQL) | 2       |
+| Hosting                | Vercel                | —       |
+| Automation             | Make.com              | —       |
+| Icônes                 | Lucide React          | 1       |
+
 
 ---
 
@@ -108,13 +110,15 @@ NEXT_PUBLIC_MAKE_WEBHOOK_URL=https://hook.eu2.make.com/xxxxxxxxxxxx
 
 ### Où trouver chaque valeur
 
-| Variable | Emplacement |
-|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase Dashboard → Project Settings → API → Project URL |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase Dashboard → Project Settings → API → `anon` public |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase Dashboard → Project Settings → API → `service_role` ⚠️ |
-| `NEXT_PUBLIC_SITE_URL` | URL Vercel de production (disponible après premier déploiement) |
-| `NEXT_PUBLIC_MAKE_WEBHOOK_URL` | Make.com → Scénario → Module Webhook → URL générée |
+
+| Variable                               | Emplacement                                                     |
+| -------------------------------------- | --------------------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`             | Supabase Dashboard → Project Settings → API → Project URL       |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase Dashboard → Project Settings → API → `anon` public     |
+| `SUPABASE_SERVICE_ROLE_KEY`            | Supabase Dashboard → Project Settings → API → `service_role` ⚠️ |
+| `NEXT_PUBLIC_SITE_URL`                 | URL Vercel de production (disponible après premier déploiement) |
+| `NEXT_PUBLIC_MAKE_WEBHOOK_URL`         | Make.com → Scénario → Module Webhook → URL générée              |
+
 
 > ⚠️ **Sécurité** : `SUPABASE_SERVICE_ROLE_KEY` bypass les règles RLS. Elle ne doit jamais apparaître dans du code client. Elle est utilisée uniquement dans `src/lib/supabase/admin.ts` (Server Components).
 
@@ -188,12 +192,14 @@ solimouv-pwa/
 
 Le fichier `src/middleware.ts` intercepte toutes les requêtes :
 
-| Cas | Comportement |
-|---|---|
-| `/?code=…` | Redirige vers `/auth/callback` (OAuth Supabase) |
-| Route app + non connecté | Redirige vers `/auth/login?next=<path>` |
-| `/auth/login` + connecté | Redirige vers `/home` |
-| `/` | Redirige vers `/home` (connecté) ou `/auth/login` |
+
+| Cas                      | Comportement                                      |
+| ------------------------ | ------------------------------------------------- |
+| `/?code=…`               | Redirige vers `/auth/callback` (OAuth Supabase)   |
+| Route app + non connecté | Redirige vers `/auth/login?next=<path>`           |
+| `/auth/login` + connecté | Redirige vers `/home`                             |
+| `/`                      | Redirige vers `/home` (connecté) ou `/auth/login` |
+
 
 ---
 
@@ -204,54 +210,67 @@ Schéma PostgreSQL géré via Supabase. Migrations dans `supabase/migrations/`.
 ### Tables principales
 
 #### `user_profiles`
+
 Profils utilisateurs, alimentés automatiquement via trigger sur `auth.users`.
 
-| Colonne | Type | Description |
-|---|---|---|
-| `id` | uuid (PK) | = `auth.users.id` |
-| `prenom` / `nom` | text | Identité |
-| `role` | text | `user` ou `admin` |
-| `onboarded` | boolean | Onboarding complété |
-| `type_sport` / `rythme` / `situation` | text | Données onboarding |
-| `email_optin` | boolean | Consentement marketing |
-| `crm_categorie` | text | Segment CRM Make |
+
+| Colonne                               | Type      | Description            |
+| ------------------------------------- | --------- | ---------------------- |
+| `id`                                  | uuid (PK) | = `auth.users.id`      |
+| `prenom` / `nom`                      | text      | Identité               |
+| `role`                                | text      | `user` ou `admin`      |
+| `onboarded`                           | boolean   | Onboarding complété    |
+| `type_sport` / `rythme` / `situation` | text      | Données onboarding     |
+| `email_optin`                         | boolean   | Consentement marketing |
+| `crm_categorie`                       | text      | Segment CRM Make       |
+
 
 #### `activites`
+
 Ateliers du programme festival.
 
-| Colonne | Type | Description |
-|---|---|---|
-| `titre` | text | Nom de l'atelier |
-| `date_debut` / `date_fin` | timestamptz | Créneau |
-| `lieu` | text | Salle / zone |
-| `capacite` / `inscrits` | integer | Gestion des places |
-| `association_id` | uuid (FK) | Association responsable |
-| `actif` | boolean | Visible publiquement |
+
+| Colonne                   | Type        | Description             |
+| ------------------------- | ----------- | ----------------------- |
+| `titre`                   | text        | Nom de l'atelier        |
+| `date_debut` / `date_fin` | timestamptz | Créneau                 |
+| `lieu`                    | text        | Salle / zone            |
+| `capacite` / `inscrits`   | integer     | Gestion des places      |
+| `association_id`          | uuid (FK)   | Association responsable |
+| `actif`                   | boolean     | Visible publiquement    |
+
 
 #### `inscriptions`
+
 Inscriptions utilisateur ↔ activité.
 
-| Colonne | Type | Description |
-|---|---|---|
-| `user_id` | uuid (FK) | Utilisateur |
-| `activite_id` | uuid (FK) | Activité |
-| `statut` | text | `confirme` / `annule` / `liste_attente` |
+
+| Colonne       | Type      | Description                             |
+| ------------- | --------- | --------------------------------------- |
+| `user_id`     | uuid (FK) | Utilisateur                             |
+| `activite_id` | uuid (FK) | Activité                                |
+| `statut`      | text      | `confirme` / `annule` / `liste_attente` |
+
 
 #### `associations`
+
 Associations partenaires du festival.
 
 #### `badges` + `user_badges`
+
 Système de gamification (badges débloqués par actions).
 
 ### Row Level Security (RLS)
 
-| Table | Non connecté | Utilisateur | Admin |
-|---|---|---|---|
-| `user_profiles` | — | Son profil uniquement | Accès complet |
-| `associations` | Lecture (actives) | Lecture | CRUD |
-| `activites` | Lecture (actives) | Lecture | CRUD |
-| `inscriptions` | — | Ses inscriptions | CRUD |
-| `badges` | Lecture | Lecture | CRUD |
+
+| Table           | Non connecté      | Utilisateur           | Admin         |
+| --------------- | ----------------- | --------------------- | ------------- |
+| `user_profiles` | —                 | Son profil uniquement | Accès complet |
+| `associations`  | Lecture (actives) | Lecture               | CRUD          |
+| `activites`     | Lecture (actives) | Lecture               | CRUD          |
+| `inscriptions`  | —                 | Ses inscriptions      | CRUD          |
+| `badges`        | Lecture           | Lecture               | CRUD          |
+
 
 > La fonction `is_admin()` vérifie `role = 'admin'` dans `user_profiles`.
 
@@ -275,6 +294,7 @@ WHERE id = (
 **Fichier** : `src/app/(pwa)/auth/callback/route.ts`
 
 Reçoit le code OAuth Supabase, échange contre une session, puis redirige :
+
 - `/onboarding` si `onboarded = false`
 - `?next=<path>` ou `/home` sinon
 
@@ -294,15 +314,18 @@ Généré par `src/app/robots.ts` — autorise tous les crawlers sur les routes 
 
 La PWA envoie des événements à Make via `NEXT_PUBLIC_MAKE_WEBHOOK_URL`.
 
-| Événement | Fichier source | Données envoyées |
-|---|---|---|
+
+| Événement           | Fichier source        | Données envoyées                                                                                      |
+| ------------------- | --------------------- | ----------------------------------------------------------------------------------------------------- |
 | Onboarding complété | `onboarding/page.tsx` | `prenom`, `type_sport`, `rythme`, `situation`, `accompagnement`, `communaute`, `email`, `email_optin` |
-| Compte créé | `auth/login/page.tsx` | `email`, `prenom` |
-| Formulaire contact | `contact/page.tsx` | `nom`, `email`, `sujet`, `message` |
+| Compte créé         | `auth/login/page.tsx` | `email`, `prenom`                                                                                     |
+| Formulaire contact  | `contact/page.tsx`    | `nom`, `email`, `sujet`, `message`                                                                    |
+
 
 ### Scénarios recommandés
 
 **Scénario 1 — Onboarding CRM**
+
 ```
 Déclencheur : Webhook POST
 ├── Router selon email_optin
@@ -313,6 +336,7 @@ Déclencheur : Webhook POST
 ```
 
 **Scénario 2 — Formulaire Contact**
+
 ```
 Déclencheur : Webhook POST
 ├── Ajouter ligne Google Sheets (suivi des demandes)
@@ -320,6 +344,7 @@ Déclencheur : Webhook POST
 ```
 
 **Scénario 3 — Nouveau compte**
+
 ```
 Déclencheur : Webhook POST
 └── Ajouter à liste CRM "Inscrits Solimouv'"
@@ -328,6 +353,7 @@ Déclencheur : Webhook POST
 ### Exporter / importer un scénario Make
 
 Pour livrer les scénarios au client :
+
 1. Make → Scénario → ⋯ → **Export Blueprint** → télécharger le `.json`
 2. Placer les fichiers dans `docs/make-scenarios/`
 3. Le client peut les importer via Make → **Create a new scenario** → **Import Blueprint**
@@ -359,6 +385,7 @@ Pour livrer les scénarios au client :
 ### Service Worker
 
 Géré par `@ducanh2912/next-pwa` :
+
 - Désactivé en développement automatiquement
 - Cache stratégique sur les assets statiques
 - Rechargement au retour en ligne
@@ -369,16 +396,19 @@ Géré par `@ducanh2912/next-pwa` :
 
 Tokens définis dans `tailwind.config.ts` :
 
-| Token | Hex | Usage |
-|---|---|---|
-| `brand.primary` | `#D81D61` | Rose — CTAs principaux |
+
+| Token             | Hex       | Usage                       |
+| ----------------- | --------- | --------------------------- |
+| `brand.primary`   | `#D81D61` | Rose — CTAs principaux      |
 | `brand.secondary` | `#474194` | Violet — navbar, sélections |
-| `brand.blue` | `#1F74BB` | Bleu — tags info |
-| `brand.green` | `#2E7E33` | Vert — succès, inscriptions |
-| `brand.red` | `#C11720` | Rouge — alertes |
-| `brand.dark` | `#050505` | Noir — textes |
+| `brand.blue`      | `#1F74BB` | Bleu — tags info            |
+| `brand.green`     | `#2E7E33` | Vert — succès, inscriptions |
+| `brand.red`       | `#C11720` | Rouge — alertes             |
+| `brand.dark`      | `#050505` | Noir — textes               |
+
 
 Typographies (Fontshare) :
+
 - **Titres** : Cabinet Grotesk (`font-heading`)
 - **Corps** : Author (`font-body`)
 
@@ -406,41 +436,45 @@ git push origin main
 
 ### Checklist post-déploiement
 
-- [ ] PWA installable (manifest détecté, service worker actif)
-- [ ] Auth fonctionnelle (magic link reçu, callback `/auth/callback`)
-- [ ] Données Supabase chargées (activités, associations visibles)
-- [ ] Formulaire contact → Make webhook reçoit les données
-- [ ] Score Lighthouse PWA ≥ 70
-- [ ] HTTPS actif
+- PWA installable (manifest détecté, service worker actif)
+- Auth fonctionnelle (magic link reçu, callback `/auth/callback`)
+- Données Supabase chargées (activités, associations visibles)
+- Formulaire contact → Make webhook reçoit les données
+- Score Lighthouse PWA ≥ 70
+- HTTPS actif
 
-> Guide complet : [`docs/DEPLOIEMENT.md`](docs/DEPLOIEMENT.md)
+> Guide complet : `[docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md)`
 
 ---
 
 ## Équipe & responsabilités
 
-| Fichier / Outil | Responsable |
-|---|---|
-| `tailwind.config.ts` → couleurs, typos | DA |
-| `public/manifest.json` → thème, icônes | DA |
-| `public/figma-assets/` → assets visuels | DA |
-| Textes de toutes les pages | Brand Content |
-| Stratégie RS + calendrier éditorial | Brand Content |
-| `supabase/migrations/` → schéma BDD | DCX |
-| Scénarios Make → automatisations | DCX |
-| `docs/RGPD.md` → conformité données | DCX |
-| Architecture, déploiement, code | Tech Lead |
-| Figma handoff → composants UI | UX/UI |
+
+| Fichier / Outil                         | Responsable   |
+| --------------------------------------- | ------------- |
+| `tailwind.config.ts` → couleurs, typos  | DA            |
+| `public/manifest.json` → thème, icônes  | DA            |
+| `public/figma-assets/` → assets visuels | DA            |
+| Textes de toutes les pages              | Brand Content |
+| Stratégie RS + calendrier éditorial     | Brand Content |
+| `supabase/migrations/` → schéma BDD     | DCX           |
+| Scénarios Make → automatisations        | DCX           |
+| `docs/RGPD.md` → conformité données     | DCX           |
+| Architecture, déploiement, code         | Tech Lead     |
+| Figma handoff → composants UI           | UX/UI         |
+
 
 ---
 
 ## Documentation complémentaire
 
-| Document | Description |
-|---|---|
-| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Stack détaillée, schéma BDD complet, RLS, routes, design system |
-| [`docs/DEPLOIEMENT.md`](docs/DEPLOIEMENT.md) | Guide pas-à-pas Vercel + Supabase + Make |
-| [`docs/RGPD.md`](docs/RGPD.md) | Données collectées, sous-traitants, droits utilisateurs, sécurité |
+
+| Document                                       | Description                                                       |
+| ---------------------------------------------- | ----------------------------------------------------------------- |
+| `[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)` | Stack détaillée, schéma BDD complet, RLS, routes, design system   |
+| `[docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md)`   | Guide pas-à-pas Vercel + Supabase + Make                          |
+| `[docs/RGPD.md](docs/RGPD.md)`                 | Données collectées, sous-traitants, droits utilisateurs, sécurité |
+
 
 ---
 

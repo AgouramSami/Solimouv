@@ -97,7 +97,8 @@ export default function AppBottomNav({ isAdmin = false }: { isAdmin?: boolean })
       className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-[#faf9f5] pb-[env(safe-area-inset-bottom)] border-t border-black/5"
       aria-label="Navigation principale"
     >
-      <div className="flex items-center justify-around px-2 pt-3 pb-2">
+      {/* px-[var(--espace/1,4px)] pt-[15px] pb-[14px] gap-[36px] — Figma 158-1802 */}
+      <div className="flex items-center justify-around px-[4px] pt-[15px] pb-[14px]">
         {navItems.map(({ href, label, Icon }) => {
           const active = pathname === href || pathname.startsWith(href + "/");
           const isCompte = href === "/compte";
@@ -106,8 +107,8 @@ export default function AppBottomNav({ isAdmin = false }: { isAdmin?: boolean })
               key={href}
               href={href}
               aria-current={active ? "page" : undefined}
-              className="flex flex-col items-center gap-0.5 flex-1 min-w-0 transition-opacity"
-              style={{ opacity: active ? 1 : 0.5 }}
+              className="flex flex-col items-center gap-0 flex-1 min-w-0 transition-opacity"
+              style={{ opacity: active ? 1 : 0.55 }}
             >
               <div className="relative shrink-0">
                 <Icon />
@@ -117,7 +118,8 @@ export default function AppBottomNav({ isAdmin = false }: { isAdmin?: boolean })
                   </span>
                 )}
               </div>
-              <span className="font-[Author,sans-serif] text-[12px] leading-tight text-[#474194] text-center truncate w-full px-1">
+              {/* Figma: font/size/s = 16px, Author Regular, text-[#474194] */}
+              <span className="font-[Author,sans-serif] text-[16px] leading-6 text-[#474194] text-center whitespace-nowrap">
                 {label}
               </span>
             </Link>

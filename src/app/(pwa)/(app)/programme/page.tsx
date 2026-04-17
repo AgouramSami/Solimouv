@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
+import InscriptionButton from "@/components/InscriptionButton";
 
 export const metadata: Metadata = {
   title: "Programme — Solimouv'",
@@ -142,12 +143,11 @@ export default async function ProgrammePage() {
                           <span className={`text-xs font-semibold rounded-full px-2.5 py-1 ${places.cls}`}>
                             {places.text}
                           </span>
-                          <Link
-                            href="/quiz"
-                            className="text-xs font-semibold text-[#474194] hover:underline"
-                          >
-                            S&apos;inscrire →
-                          </Link>
+                          <InscriptionButton
+                            activiteId={a.id}
+                            titre={a.titre}
+                            placesDisponibles={a.capacite_max - (a.inscriptions ?? 0)}
+                          />
                         </div>
                       </div>
                     );

@@ -42,8 +42,8 @@ Dans le dashboard Supabase → **Authentication → URL Configuration** :
 
 | Champ | Valeur |
 |---|---|
-| Site URL | `https://solimouv.vercel.app` (ou URL Vercel finale) |
-| Redirect URLs | `https://solimouv.vercel.app/auth/callback` |
+| Site URL | `https://solimouv-liart.vercel.app` (ou URL Vercel finale) |
+| Redirect URLs | `https://solimouv-liart.vercel.app/auth/callback` |
 
 Activer **Email Auth** (magic link recommandé).
 

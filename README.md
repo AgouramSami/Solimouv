@@ -4,6 +4,8 @@
 
 ---
 
+##Lien : 
+
 ## Sommaire
 
 - [Stack technique](#stack-technique)
@@ -101,7 +103,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 # ── Site ─────────────────────────────────────────────────────────────────────
 # URL de production (sans slash final)
-NEXT_PUBLIC_SITE_URL=https://solimouv.vercel.app
+NEXT_PUBLIC_SITE_URL=https://solimouv-liart.vercel.app
 
 # ── Make.com ─────────────────────────────────────────────────────────────────
 # Make → Create scenario → Webhooks → Custom Webhook → Copy URL
@@ -469,11 +471,11 @@ git push origin main
 ## Documentation complémentaire
 
 
-| Document                                       | Description                                                       |
-| ---------------------------------------------- | ----------------------------------------------------------------- |
-| `[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)` | Stack détaillée, schéma BDD complet, RLS, routes, design system   |
-| `[docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md)`   | Guide pas-à-pas Vercel + Supabase + Make                          |
-| `[docs/RGPD.md](docs/RGPD.md)`                 | Données collectées, sous-traitants, droits utilisateurs, sécurité |
+| Document                                       | Description                                                     |
+| ---------------------------------------------- | --------------------------------------------------------------- |
+| `[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)` | Stack détaillée, schéma BDD complet, RLS, routes, design system |
+| `[docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md)`   | Guide pas-à-pas Vercel + Supabase + Make                        |
+|                                                |                                                                 |
 
 
 ---

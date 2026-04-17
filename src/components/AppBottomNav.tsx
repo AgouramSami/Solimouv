@@ -71,11 +71,29 @@ function IconParametres() {
   );
 }
 
+function IconProgramme() {
+  return (
+    <div className="relative size-[46px] flex items-center justify-center">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="5" width="22" height="20" rx="3" stroke="#474194" strokeWidth="2" fill="none"/>
+        <path d="M3 11h22" stroke="#474194" strokeWidth="2"/>
+        <path d="M9 3v4M19 3v4" stroke="#474194" strokeWidth="2" strokeLinecap="round"/>
+        <rect x="7" y="15" width="4" height="3" rx="1" fill="#474194"/>
+        <rect x="12" y="15" width="4" height="3" rx="1" fill="#474194"/>
+        <rect x="17" y="15" width="4" height="3" rx="1" fill="#474194"/>
+        <rect x="7" y="19.5" width="4" height="3" rx="1" fill="#474194"/>
+        <rect x="12" y="19.5" width="4" height="3" rx="1" fill="#474194"/>
+      </svg>
+    </div>
+  );
+}
+
 export const navItems = [
   { href: "/home",         label: "Accueil",    Icon: IconAccueil },
-  { href: "/associations", label: "Association", Icon: IconAssociation },
-  { href: "/compte",       label: "Mon compte",  Icon: IconCompte },
-  { href: "/parametres",   label: "Paramètres",  Icon: IconParametres },
+  { href: "/programme",    label: "Programme",  Icon: IconProgramme },
+  { href: "/associations", label: "Assos",      Icon: IconAssociation },
+  { href: "/compte",       label: "Mon compte", Icon: IconCompte },
+  { href: "/parametres",   label: "Paramètres", Icon: IconParametres },
 ];
 
 // ─── Scaled icon wrapper — renders 46px icon at any target size ───────────────

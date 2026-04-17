@@ -94,6 +94,14 @@ const { ma_fonction } = await import("../rust/pkg");
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clé publique Supabase |
 | `NEXT_PUBLIC_SITE_URL` | URL de production |
 
+## Documentation
+
+| Document | Description |
+|---|---|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Stack, schéma BDD, routes, intégrations Make, design system |
+| [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md) | Déploiement Vercel, configuration Supabase, Make webhooks |
+| [docs/RGPD.md](docs/RGPD.md) | Données collectées, sous-traitants, droits utilisateurs, sécurité |
+
 ## Répartition équipe
 
 | Fichier | Responsable |

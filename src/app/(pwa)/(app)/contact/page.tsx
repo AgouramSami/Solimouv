@@ -1,11 +1,69 @@
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Contact — Solimouv'",
-  description: "Contactez l'équipe Solimouv' et Up Sport! pour toute question sur le festival, les partenariats ou la participation.",
-};
+import { useState } from "react";
 
 export default function ContactPage() {
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    const form = e.currentTarget;
+    const name = (form.elements.namedItem("name") as HTMLInputElement).value.trim();
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value.trim();
+    const sujet = (form.elements.namedItem("sujet") as HTMLSelectElement).value;
+    const message = (form.elements.namedItem("message") as HTMLTextAreaElement).value.trim();
+
+    const webhookUrl = process.env.NEXT_PUBLIC_MAKE_WEBHOOK_URL;
+
+    if (!webhookUrl) {
+      setError("Webhook non configuré. Contactez l'administrateur.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const now = new Date();
+      const dateStr = now.toLocaleDateString("fr-FR");
+
+      await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "contact",
+          nom: name,
+          email,
+          sujet,
+          message,
+          date_contact: dateStr,
+          // Champs CRM compatibles avec le schéma existant
+          prenom: name.split(" ")[0] ?? name,
+          question_1: sujet,
+          question_2: message,
+          question_3: "",
+          question_4: "",
+          question_5: "",
+          categorie_email: sujet || "contact",
+          optin_email: "non",
+          date_optin: "",
+          id_compte: `contact_${Date.now()}`,
+          age: null,
+        }),
+      });
+
+      setSent(true);
+      form.reset();
+    } catch {
+      setError("Une erreur est survenue. Veuillez réessayer.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -19,64 +77,86 @@ export default function ContactPage() {
         {/* Formulaire */}
         <section>
           <h2 className="font-heading text-lg font-bold text-[#050505] mb-4">Envoyer un message</h2>
-          <form className="space-y-4" action="#" method="POST">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                Nom complet <span className="text-[#d81d61]">*</span>
+
+          {sent ? (
+            <div className="rounded-2xl bg-[#474194]/10 border border-[#474194]/20 px-5 py-8 text-center">
+              <p className="text-2xl mb-2">✅</p>
+              <p className="font-semibold text-[#474194]">Message envoyé !</p>
+              <p className="text-sm text-gray-600 mt-1">Nous vous répondrons dans les plus brefs délais.</p>
+              <button
+                onClick={() => setSent(false)}
+                className="mt-4 text-sm text-[#474194] underline"
+              >
+                Envoyer un autre message
+              </button>
+            </div>
+          ) : (
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Nom complet <span className="text-[#d81d61]">*</span>
+                </label>
+                <input id="name" name="name" type="text" required autoComplete="name"
+                  className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#474194] transition"
+                  placeholder="Votre nom" />
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email <span className="text-[#d81d61]">*</span>
+                </label>
+                <input id="email" name="email" type="email" required autoComplete="email"
+                  className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#474194] transition"
+                  placeholder="votre@email.com" />
+              </div>
+
+              <div>
+                <label htmlFor="sujet" className="block text-sm font-medium text-gray-700 mb-1">Sujet</label>
+                <select id="sujet" name="sujet"
+                  className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#474194] transition">
+                  <option value="">Choisir un sujet</option>
+                  <option value="participation">Participer au festival</option>
+                  <option value="partenariat">Partenariat / Association</option>
+                  <option value="benevolat">Devenir bénévole</option>
+                  <option value="presse">Presse / Médias</option>
+                  <option value="autre">Autre</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                  Message <span className="text-[#d81d61]">*</span>
+                </label>
+                <textarea id="message" name="message" rows={4} required
+                  className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#474194] transition resize-none"
+                  placeholder="Votre message..." />
+              </div>
+
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input id="rgpd" name="rgpd" type="checkbox" required
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300" />
+                <span className="text-xs text-gray-500">
+                  J&apos;accepte que mes données soient utilisées pour traiter ma demande
+                  conformément à la{" "}
+                  <a href="/confidentialite" className="underline hover:text-[#474194]">
+                    politique de confidentialité
+                  </a>. <span className="text-[#d81d61]">*</span>
+                </span>
               </label>
-              <input id="name" name="name" type="text" required autoComplete="name"
-                className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#474194] transition"
-                placeholder="Votre nom" />
-            </div>
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email <span className="text-[#d81d61]">*</span>
-              </label>
-              <input id="email" name="email" type="email" required autoComplete="email"
-                className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#474194] transition"
-                placeholder="votre@email.com" />
-            </div>
+              {error && (
+                <p className="text-sm text-red-600 bg-red-50 rounded-xl px-4 py-2">{error}</p>
+              )}
 
-            <div>
-              <label htmlFor="sujet" className="block text-sm font-medium text-gray-700 mb-1">Sujet</label>
-              <select id="sujet" name="sujet"
-                className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#474194] transition">
-                <option value="">Choisir un sujet</option>
-                <option value="participation">Participer au festival</option>
-                <option value="partenariat">Partenariat / Association</option>
-                <option value="benevolat">Devenir bénévole</option>
-                <option value="presse">Presse / Médias</option>
-                <option value="autre">Autre</option>
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                Message <span className="text-[#d81d61]">*</span>
-              </label>
-              <textarea id="message" name="message" rows={4} required
-                className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#474194] transition resize-none"
-                placeholder="Votre message..." />
-            </div>
-
-            <label className="flex items-start gap-3 cursor-pointer">
-              <input id="rgpd" name="rgpd" type="checkbox" required
-                className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300" />
-              <span className="text-xs text-gray-500">
-                J&apos;accepte que mes données soient utilisées pour traiter ma demande
-                conformément à la{" "}
-                <a href="/confidentialite" className="underline hover:text-[#474194]">
-                  politique de confidentialité
-                </a>. <span className="text-[#d81d61]">*</span>
-              </span>
-            </label>
-
-            <button type="submit"
-              className="w-full rounded-full bg-[#474194] py-4 text-sm font-semibold text-white transition active:scale-95 hover:bg-[#3a3578]">
-              Envoyer le message
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-full bg-[#474194] py-4 text-sm font-semibold text-white transition active:scale-95 hover:bg-[#3a3578] disabled:opacity-60"
+              >
+                {loading ? "Envoi en cours…" : "Envoyer le message"}
+              </button>
+            </form>
+          )}
         </section>
 
         {/* Infos */}

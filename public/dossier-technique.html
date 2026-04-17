@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dossier Technique — Solimouv'</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+      --violet:  #474194;
+      --vert:    #2e7e33;
+      --rose:    #d81d61;
+      --bleu:    #1f74bb;
+      --dark:    #1a1a2e;
+      --light:   #f7f6f2;
+      --white:   #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    /* ── Cover ── */
+    .cover {
+      background: var(--violet);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 80px 80px;
+      page-break-after: always;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 350px; height: 350px;
+      border-radius: 50%;
+      background: var(--rose);
+      opacity: 0.2;
+    }
+    .cover-tag {
+      background: var(--rose);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 32px;
+    }
+    .cover h1 {
+      font-size: 64px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .cover h1 span { color: var(--rose); }
+    .cover .subtitle {
+      font-size: 20px;
+      font-weight: 300;
+      opacity: 0.8;
+      max-width: 560px;
+      margin-bottom: 48px;
+    }
+    .cover-meta {
+      display: flex;
+      gap: 40px;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+    .cover-meta strong { display: block; color: white; opacity: 1; font-size: 15px; }
+
+    /* ── Sections ── */
+    .section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 80px 40px;
+      page-break-inside: avoid;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .tag-violet { background: #ede9fe; color: var(--violet); }
+    .tag-vert   { background: #dcfce7; color: var(--vert); }
+    .tag-rose   { background: #fce7f3; color: var(--rose); }
+    .tag-bleu   { background: #dbeafe; color: var(--bleu); }
+
+    h2 {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--dark);
+    }
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--dark);
+    }
+    .lead {
+      font-size: 17px;
+      color: #555;
+      max-width: 680px;
+      margin-bottom: 48px;
+    }
+
+    /* ── Grid cards ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 28px 24px;
+      border: 1px solid #eee;
+    }
+    .card-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+    .bg-violet { background: #ede9fe; }
+    .bg-vert   { background: #dcfce7; }
+    .bg-rose   { background: #fce7f3; }
+    .bg-bleu   { background: #dbeafe; }
+
+    .card p { font-size: 13px; color: #777; margin-top: 6px; }
+
+    /* ── Stack table ── */
+    .stack-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .stack-row:last-child { border-bottom: none; }
+    .stack-badge {
+      flex-shrink: 0;
+      width: 120px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .stack-content { flex: 1; }
+    .stack-content h4 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .stack-content p  { font-size: 13px; color: #666; }
+    .stack-why {
+      font-size: 12px;
+      color: var(--violet);
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    /* ── Planning ── */
+    .timeline { position: relative; padding-left: 40px; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 12px; top: 8px; bottom: 8px;
+      width: 2px; background: #eee;
+    }
+    .tl-item {
+      position: relative;
+      padding: 0 0 32px 24px;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -8px; top: 6px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--violet);
+      border: 2px solid white;
+      box-shadow: 0 0 0 2px var(--violet);
+    }
+    .tl-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--violet);
+      margin-bottom: 4px;
+    }
+    .tl-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+    .tl-desc  { font-size: 13px; color: #666; }
+
+    /* ── Budget ── */
+    .budget-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .budget-row .label { color: #444; }
+    .budget-row .amount { font-weight: 700; color: var(--dark); }
+    .budget-row.total {
+      border-top: 2px solid var(--violet);
+      border-bottom: none;
+      margin-top: 8px;
+      padding-top: 16px;
+    }
+    .budget-row.total .label { font-weight: 800; font-size: 16px; }
+    .budget-row.total .amount { font-size: 22px; color: var(--violet); }
+
+    /* ── KPIs ── */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .kpi-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px 20px;
+      border: 1px solid #eee;
+      text-align: center;
+    }
+    .kpi-value {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--violet);
+      line-height: 1;
+    }
+    .kpi-label { font-size: 12px; color: #888; margin-top: 6px; }
+
+    /* ── PWA vs natif ── */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .compare-card {
+      border-radius: 20px;
+      padding: 28px;
+    }
+    .compare-card.chosen {
+      background: var(--violet);
+      color: white;
+    }
+    .compare-card.other {
+      background: white;
+      border: 1px solid #eee;
+      opacity: 0.7;
+    }
+    .compare-card h3 { margin-bottom: 16px; }
+    .compare-card.chosen h3 { color: white; }
+    .check-list { list-style: none; padding: 0; }
+    .check-list li {
+      font-size: 13px;
+      padding: 4px 0;
+      display: flex;
+      gap: 8px;
+    }
+    .check-list li::before { content: '✓'; font-weight: 700; }
+    .compare-card.chosen .check-list li::before { color: #a5f3a5; }
+    .compare-card.other  .check-list li::before { color: #ccc; }
+
+    /* ── Footer ── */
+    .doc-footer {
+      background: var(--dark);
+      color: white;
+      padding: 48px 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+    .doc-footer a { color: var(--rose); }
+
+    /* ── Print ── */
+    @media print {
+      .section { page-break-inside: avoid; }
+      .cover { page-break-after: always; }
+    }
+    @media (max-width: 700px) {
+      .grid-2, .grid-3, .grid-4, .kpi-grid, .compare { grid-template-columns: 1fr; }
+      .cover { padding: 48px 32px; }
+      .cover h1 { font-size: 40px; }
+      .section { padding: 48px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ COVER ══════════════════ -->
+<div class="cover">
+  <div class="cover-tag">Dossier Technique · Hackathon NoCode · Avril 2026</div>
+  <h1>Solimouv'<br><span>Solution Digitale</span></h1>
+  <p class="subtitle">
+    PWA mobile-first pour le festival du sport inclusif organisé par Up Sport! à Paris —
+    communication, matching sportif et pilotage en temps réel.
+  </p>
+  <div class="cover-meta">
+    <div><strong>Client</strong>Association Up Sport!</div>
+    <div><strong>Équipe</strong>Tech Lead + DA + DCX + UX-UI</div>
+    <div><strong>Deadline</strong>18 avril 2026 · 12h30</div>
+    <div><strong>Déploiement</strong>Vercel (production)</div>
+  </div>
+</div>
+
+<!-- ══════════════════ RÉSUMÉ EXÉCUTIF ══════════════════ -->
+<div class="section">
+  <div class="section-tag tag-violet">Vue d'ensemble</div>
+  <h2>Résumé exécutif</h2>
+  <p class="lead">
+    Solimouv' est une Progressive Web App (PWA) pensée mobile-first permettant aux visiteurs
+    du festival de découvrir le programme, trouver leur sport, et à l'équipe Up Sport! de piloter
+    l'événement en temps réel — sans développement iOS/Android.
+  </p>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value">&lt;24h</div>
+      <div class="kpi-label">Temps de développement</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">0€</div>
+      <div class="kpi-label">Coût infrastructure (MVP)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">PWA</div>
+      <div class="kpi-label">Installable sans App Store</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">&gt;70</div>
+      <div class="kpi-label">Score Lighthouse cible</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ PWA VS NATIF ══════════════════ -->
+<div style="background: #f0eef8; padding: 80px 0;">
+<div class="section" style="padding-top: 0; padding-bottom: 0;">
+  <div class="section-tag tag-violet">Choix stratégique</div>
+  <h2>PWA plutôt qu'application native</h2>
+  <p class="lead">
+    Pour un festival annuel avec une audience large et des contraintes de budget nulles,
+    une PWA est la solution optimale.
+  </p>
+  <div class="compare">
+    <div class="compare-card chosen">
+      <h3>✓ PWA — Notre choix</h3>
+      <ul class="check-list">
+        <li>Installable sur iOS + Android depuis le navigateur</li>
+        <li>Zéro friction : pas d'App Store, pas de compte</li>
+        <li>Un seul codebase, déploiement instantané</li>
+        <li>Mise à jour transparente (pas de validation store)</li>
+        <li>Fonctionne hors-ligne (Workbox cache stratégies)</li>
+        <li>SEO natif, indexable par Google</li>
+        <li>Coût infrastructure : 0€ sur Vercel (hobby tier)</li>
+      </ul>
+    </div>
+    <div class="compare-card other">
+      <h3>Application native iOS/Android</h3>
+      <ul class="check-list" style="color: #999;">
+        <li>2 codebases distincts à maintenir</li>
+        <li>Délais validation App Store (2-7 jours)</li>
+        <li>Compte développeur Apple 99$/an</li>
+        <li>Installation obligatoire avant usage</li>
+        <li>Compétences iOS/Android requises</li>
+        <li>Inadapté pour un événement annuel</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════ STACK TECHNIQUE ══════════════════ -->
+<div class="section">
+  <div class="section-tag tag-violet">Architecture</div>
+  <h2>Stack technique</h2>
+  <p class="lead">
+    Stack moderne orientée productivité : Next.js full-stack pour réduire la surface de code,
+    Supabase pour éliminer le backend custom, Make.com pour les automatisations sans serveur.
+  </p>
+
+  <div class="stack-row">
+    <div class="stack-badge bg-violet" style="color: var(--violet);">Frontend</div>
+    <div class="stack-content">
+      <h4>Next.js 15 — App Router + React Server Components</h4>
+      <p>TypeScript · Tailwind CSS · Cabinet Grotesk + Author (Fontshare)</p>
+      <div class="stack-why">→ Full-stack en un seul repo, SSR/SSG natif, optimisation images automatique, routing file-based. Adoption massive, documentation exhaustive.</div>
+    </div>
+  </div>
+
+  <div class="stack-row">
+    <div class="stack-badge bg-vert" style="color: var(--vert);">PWA</div>
+    <div class="stack-content">
+      <h4>@ducanh2912/next-pwa + Workbox</h4>
+      <p>Web App Manifest · Service Worker · Cache stratégies (NetworkFirst, StaleWhileRevalidate)</p>
+      <div class="stack-why">→ Génération automatique du service worker, cache offline, installabilité iOS/Android sans configuration complexe.</div>
+    </div>
+  </div>
+
+  <div class="stack-row">
+    <div class="stack-badge bg-bleu" style="color: var(--bleu);">Backend / BaaS</div>
+    <div class="stack-content">
+      <h4>Supabase — PostgreSQL + Auth + Storage + Realtime</h4>
+      <p>RLS (Row Level Security) · Edge Functions · API REST auto-générée</p>
+      <div class="stack-why">→ Remplace un backend Node/Express entier : authentification, base de données, stockage fichiers, temps réel — zéro infrastructure à gérer. Tier gratuit suffisant pour le MVP.</div>
+    </div>
+  </div>
+
+  <div class="stack-row">
+    <div class="stack-badge bg-rose" style="color: var(--rose);">Automation</div>
+    <div class="stack-content">
+      <h4>Make.com (ex-Integromat)</h4>
+      <p>Webhooks → Google Sheets CRM · Emails Gmail · Notifications push</p>
+      <div class="stack-why">→ Connecte la PWA à l'écosystème existant de l'association (Google Sheets, Gmail) sans développement backend. Scénarios visuels maintenables par l'équipe non-technique.</div>
+    </div>
+  </div>
+
+  <div class="stack-row">
+    <div class="stack-badge bg-violet" style="color: var(--violet);">Hébergement</div>
+    <div class="stack-content">
+      <h4>Vercel — Hosting + CI/CD</h4>
+      <p>Deploy automatique sur push Git · Preview URLs par branche · Edge Network mondial</p>
+      <div class="stack-why">→ Intégration native Next.js (même éditeur), déploiement en 30 secondes, CDN mondial, HTTPS automatique. Tier Hobby gratuit couvre largement un festival.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════ FONCTIONNALITÉS ══════════════════ -->
+<div style="background: #f0eef8; padding: 80px 0;">
+<div class="section" style="padding-top: 0; padding-bottom: 0;">
+  <div class="section-tag tag-violet">Périmètre</div>
+  <h2>Fonctionnalités livrées</h2>
+  <p class="lead">Socle PWA + 4 briques bonus implémentées en &lt;24h.</p>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-icon bg-violet">🏠</div>
+      <h3>Accueil & Onboarding</h3>
+      <p>Questionnaire 5 étapes, profil utilisateur Supabase, webhook CRM Make.com</p>
+    </div>
+    <div class="card">
+      <div class="card-icon bg-vert">📅</div>
+      <h3>Programme interactif</h3>
+      <p>Activités temps réel depuis Supabase, filtres, disponibilité, inscription</p>
+    </div>
+    <div class="card">
+      <div class="card-icon bg-bleu">🏢</div>
+      <h3>Associations partenaires</h3>
+      <p>Annuaire filtrable, fiches détail, liens réseaux sociaux</p>
+    </div>
+    <div class="card">
+      <div class="card-icon bg-rose">🎯</div>
+      <h3>Matching sportif (Quiz)</h3>
+      <p>Quiz IA → recommandations personnalisées 2-3 sports, partage social</p>
+    </div>
+    <div class="card">
+      <div class="card-icon bg-violet">📊</div>
+      <h3>Dashboard Admin</h3>
+      <p>CRUD activités, gestion rôles (admin/bénévole/user), KPIs inscriptions</p>
+    </div>
+    <div class="card">
+      <div class="card-icon bg-vert">✉️</div>
+      <h3>Contact & CRM</h3>
+      <p>Formulaire → Make.com → Google Sheets + email automatique Gmail</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════ ARCHITECTURE ══════════════════ -->
+<div class="section">
+  <div class="section-tag tag-bleu">Architecture</div>
+  <h2>Schéma d'architecture</h2>
+  <p class="lead">Architecture serverless orientée JAMstack — pas de serveur à gérer.</p>
+
+  <div style="background: white; border-radius: 24px; padding: 40px; border: 1px solid #eee;">
+    <div style="display: flex; flex-direction: column; gap: 16px; font-size: 13px;">
+
+      <div style="text-align: center; background: #ede9fe; border-radius: 12px; padding: 16px; font-weight: 700; color: var(--violet);">
+        👤 Utilisateur (mobile / desktop) — navigateur
+      </div>
+
+      <div style="text-align: center; font-size: 20px; color: #ccc;">↕ HTTPS</div>
+
+      <div style="background: var(--violet); color: white; border-radius: 12px; padding: 16px; text-align: center; font-weight: 700;">
+        Vercel Edge Network — CDN mondial<br>
+        <span style="font-weight: 400; font-size: 12px; opacity: 0.8;">Next.js 15 · SSR/SSG · API Routes · Service Worker (PWA)</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+        <div style="background: #dcfce7; border-radius: 12px; padding: 16px; text-align: center;">
+          <div style="font-weight: 700; color: var(--vert);">Supabase</div>
+          <div style="color: #555; font-size: 12px;">PostgreSQL · Auth · Storage · Realtime</div>
+        </div>
+        <div style="background: #fce7f3; border-radius: 12px; padding: 16px; text-align: center;">
+          <div style="font-weight: 700; color: var(--rose);">Make.com</div>
+          <div style="color: #555; font-size: 12px;">Webhooks · Google Sheets · Gmail</div>
+        </div>
+        <div style="background: #dbeafe; border-radius: 12px; padding: 16px; text-align: center;">
+          <div style="font-weight: 700; color: var(--bleu);">GitHub</div>
+          <div style="color: #555; font-size: 12px;">CI/CD · Preview deploys</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ PLANNING ══════════════════ -->
+<div style="background: #f0eef8; padding: 80px 0;">
+<div class="section" style="padding-top: 0; padding-bottom: 0;">
+  <div class="section-tag tag-vert">Planning</div>
+  <h2>Planning de réalisation</h2>
+  <p class="lead">Hackathon 24h — 17 avril 2026 (9h) → 18 avril 2026 (12h30)</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-label">J0 · 09h00 – 11h00 · 2h</div>
+      <div class="tl-title">Setup & Architecture</div>
+      <div class="tl-desc">Init Next.js 15 + Supabase + Vercel · Design system Figma → Tailwind · Structure routes App Router · Manifest PWA</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-label">J0 · 11h00 – 14h00 · 3h</div>
+      <div class="tl-title">Authentification & Onboarding</div>
+      <div class="tl-desc">Auth Supabase (email + magic link) · Formulaire onboarding 5 étapes · Profil utilisateur · Webhook Make.com CRM</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-label">J0 · 14h00 – 18h00 · 4h</div>
+      <div class="tl-title">Pages core (Home, Programme, Associations)</div>
+      <div class="tl-desc">Page accueil avec countdown festival · Programme activités depuis Supabase · Annuaire associations filtrable · Bottom nav mobile</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-label">J0 · 18h00 – 22h00 · 4h</div>
+      <div class="tl-title">Matching sportif (Quiz) & Admin</div>
+      <div class="tl-desc">Quiz IA → recommandations sport · Dashboard admin CRUD · Gestion rôles RLS Supabase · KPIs inscriptions</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-label">J0 · 22h00 – J1 02h00 · 4h</div>
+      <div class="tl-title">Contact, SEO & Make.com</div>
+      <div class="tl-desc">Formulaire contact → Make.com → Google Sheets · Meta/OG/Twitter Card · Schema.org · Sitemap.xml</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-label">J1 · 08h00 – 10h30 · 2h30</div>
+      <div class="tl-title">Polish, tests & documentation</div>
+      <div class="tl-desc">Lighthouse audit · Correction bugs · Guide utilisateur · Doc technique · RGPD · README GitHub</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-label">J1 · 10h30 – 12h30 · 2h</div>
+      <div class="tl-title">Livraison & Pitch</div>
+      <div class="tl-desc">Deploy Vercel production · Bundle livrables · Dossier présentation · Répétition pitch 2 min</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════ BUDGET ══════════════════ -->
+<div class="section">
+  <div class="section-tag tag-rose">Chiffrage</div>
+  <h2>Budget infrastructure MVP</h2>
+  <p class="lead">
+    Architecture 100% serverless sur tiers gratuits — coût zéro pour le MVP du festival.
+    Projection coûts si passage en production pérenne.
+  </p>
+  <div class="grid-2" style="gap: 40px; align-items: start;">
+    <div>
+      <h3 style="margin-bottom: 20px;">MVP Festival (aujourd'hui)</h3>
+      <div class="budget-row">
+        <span class="label">Vercel — Hobby tier</span>
+        <span class="amount">0€ / mois</span>
+      </div>
+      <div class="budget-row">
+        <span class="label">Supabase — Free tier (500 MB, 50k req/j)</span>
+        <span class="amount">0€ / mois</span>
+      </div>
+      <div class="budget-row">
+        <span class="label">Make.com — Free (1 000 opérations/mois)</span>
+        <span class="amount">0€ / mois</span>
+      </div>
+      <div class="budget-row">
+        <span class="label">Domaine (optionnel)</span>
+        <span class="amount">~12€ / an</span>
+      </div>
+      <div class="budget-row total">
+        <span class="label">Total MVP</span>
+        <span class="amount">0€ / mois</span>
+      </div>
+    </div>
+    <div>
+      <h3 style="margin-bottom: 20px;">Production pérenne (post-festival)</h3>
+      <div class="budget-row">
+        <span class="label">Vercel — Pro (si > 100 GB bandwidth)</span>
+        <span class="amount">20€ / mois</span>
+      </div>
+      <div class="budget-row">
+        <span class="label">Supabase — Pro (8 GB, support)</span>
+        <span class="amount">25€ / mois</span>
+      </div>
+      <div class="budget-row">
+        <span class="label">Make.com — Basic (10 000 opérations)</span>
+        <span class="amount">9€ / mois</span>
+      </div>
+      <div class="budget-row">
+        <span class="label">Domaine</span>
+        <span class="amount">~12€ / an</span>
+      </div>
+      <div class="budget-row total">
+        <span class="label">Total production</span>
+        <span class="amount">~54€ / mois</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ LIVRABLES TECH LEAD ══════════════════ -->
+<div style="background: var(--violet); padding: 80px 0; color: white;">
+<div class="section" style="padding-top: 0; padding-bottom: 0;">
+  <div class="section-tag" style="background: rgba(255,255,255,0.15); color: white;">Livrables</div>
+  <h2 style="color: white;">Livrables Tech Lead</h2>
+  <p class="lead" style="color: rgba(255,255,255,0.75);">Tout ce que l'association peut reprendre et faire vivre de manière autonome.</p>
+  <div class="grid-2">
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 20px; font-size: 14px;">
+        <div style="font-weight: 700; margin-bottom: 4px;">Repository GitHub documenté</div>
+        <div style="opacity: 0.7;">README · Instructions déploiement · Branches propres · CI/CD Vercel</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 20px; font-size: 14px;">
+        <div style="font-weight: 700; margin-bottom: 4px;">PWA déployée (production)</div>
+        <div style="opacity: 0.7;">Vercel · HTTPS · Installable iOS/Android · Lighthouse &gt; 70</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 20px; font-size: 14px;">
+        <div style="font-weight: 700; margin-bottom: 4px;">Documentation technique</div>
+        <div style="opacity: 0.7;">Architecture · Stack · API Supabase · Variables d'environnement · Make.com</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 20px; font-size: 14px;">
+        <div style="font-weight: 700; margin-bottom: 4px;">Documentation RGPD</div>
+        <div style="opacity: 0.7;">Données collectées · Durée conservation · Droits utilisateurs · Base légale</div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 20px; font-size: 14px;">
+        <div style="font-weight: 700; margin-bottom: 4px;">Guide utilisateur</div>
+        <div style="opacity: 0.7;">Prise en main PWA · Admin dashboard · Gestion Make.com · FAQ</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 20px; font-size: 14px;">
+        <div style="font-weight: 700; margin-bottom: 4px;">SEO complet</div>
+        <div style="opacity: 0.7;">Meta/OG/Twitter Card · Sitemap.xml · Schema.org Event + Organization</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 20px; font-size: 14px;">
+        <div style="font-weight: 700; margin-bottom: 4px;">Charte graphique exportable</div>
+        <div style="opacity: 0.7;">Palette · Typographies · Composants · Guide PDF</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 20px; font-size: 14px;">
+        <div style="font-weight: 700; margin-bottom: 4px;">Contenu & Réseaux sociaux</div>
+        <div style="opacity: 0.7;">5 templates RS · Calendrier éditorial · Stratégie comms</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<div class="doc-footer">
+  <div>
+    <div style="font-weight: 700; font-size: 16px; margin-bottom: 4px;">Solimouv' · Dossier Technique</div>
+    <div style="opacity: 0.5;">Hackathon NoCode · 17–18 avril 2026 · Up Sport!</div>
+  </div>
+  <div style="text-align: right; opacity: 0.5; font-size: 12px;">
+    Next.js 15 · Supabase · Vercel · Make.com<br>
+    Généré par Claude Code · Anthropic
+  </div>
+</div>
+
+</body>
+</html>

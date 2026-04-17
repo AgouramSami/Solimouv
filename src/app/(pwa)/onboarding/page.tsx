@@ -166,14 +166,23 @@ export default function OnboardingPage() {
     if (user) {
       const crm = getCRMCategory(answers.situation ?? "", answers.communaute ?? "");
 
+      // Lire prenom/nom depuis user_metadata ET user_profiles (fallback)
       const meta = user.user_metadata ?? {};
-      const fullName: string = meta.full_name ?? meta.name ?? "";
-      const parts = fullName.trim().split(" ");
+      const { data: profile } = await supabase
+        .from("user_profiles")
+        .select("prenom, nom, age, email_optin")
+        .eq("id", user.id)
+        .single();
+
+      const prenom = meta.prenom ?? profile?.prenom ?? meta.full_name?.split(" ")[0] ?? "";
+      const nom = meta.nom ?? profile?.nom ?? meta.full_name?.split(" ").slice(1).join(" ") ?? "";
+      const fullName = `${prenom} ${nom}`.trim();
+
       await supabase.from("user_profiles").upsert({
         id: user.id,
-        prenom: meta.prenom ?? parts[0] ?? "",
-        nom: meta.nom ?? parts.slice(1).join(" ") ?? "",
-        age: meta.age ?? null,
+        prenom,
+        nom,
+        age: meta.age ?? profile?.age ?? null,
         full_name: fullName,
         type_sport: answers.type_sport ?? "",
         rythme: answers.rythme ?? "",
@@ -191,14 +200,13 @@ export default function OnboardingPage() {
 
       const webhookUrl = process.env.NEXT_PUBLIC_MAKE_WEBHOOK_URL;
       if (webhookUrl) {
-        const meta2 = user.user_metadata ?? {};
-        const fullName2: string = meta2.full_name ?? meta2.name ?? "";
-        const parts2 = fullName2.trim().split(" ");
-        const prenom2 = meta2.prenom ?? parts2[0] ?? "";
-        const nom2 = meta2.nom ?? parts2.slice(1).join(" ") ?? "";
-        const slug = (prenom2 + nom2).toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 10);
+        const slug = (prenom + nom).toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 10);
         const now = new Date();
         const dateTag = `${String(now.getDate()).padStart(2, "0")}${String(now.getMonth() + 1).padStart(2, "0")}`;
+        const emailOptin = meta.email_optin ?? profile?.email_optin ?? false;
+        const optinDate = emailOptin
+          ? `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()}`
+          : "";
         const typeSportLabels: Record<string, string> = {
           sports_collectifs: "sports collectifs",
           sports_individuels: "sports individuels",
@@ -207,28 +215,35 @@ export default function OnboardingPage() {
           plein_air_nature: "plein air / nature",
           bien_etre_yoga: "bien-être / yoga",
         };
-        const optinDate = meta2.email_optin
-          ? `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()}`
-          : "";
-        await fetch(webhookUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            nom: nom2,
-            prenom: prenom2,
-            id_compte: `${slug}${dateTag}`,
-            age: meta2.age ?? null,
-            email: user.email ?? "",
-            optin_email: meta2.email_optin ? "oui" : "non",
-            date_optin: optinDate,
-            question_1: typeSportLabels[answers.type_sport ?? ""] ?? answers.type_sport ?? "",
-            categorie_email: answers.type_sport ?? "",
-            question_2: answers.rythme ?? "",
-            question_3: answers.situation ?? "",
-            question_4: answers.accompagnement ?? "",
-            question_5: answers.communaute ?? "",
-          }),
-        }).catch(() => {});
+
+        const payload = {
+          nom,
+          prenom,
+          id_compte: `${slug}${dateTag}`,
+          age: meta.age ?? profile?.age ?? null,
+          email: user.email ?? "",
+          optin_email: emailOptin ? "oui" : "non",
+          date_optin: optinDate,
+          question_1: typeSportLabels[answers.type_sport ?? ""] ?? answers.type_sport ?? "",
+          categorie_email: answers.type_sport ?? "",
+          question_2: answers.rythme ?? "",
+          question_3: answers.situation ?? "",
+          question_4: answers.accompagnement ?? "",
+          question_5: answers.communaute ?? "",
+        };
+
+        try {
+          const res = await fetch(webhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (!res.ok) console.error("[Make webhook] HTTP", res.status, await res.text());
+        } catch (err) {
+          console.error("[Make webhook] fetch error:", err);
+        }
+      } else {
+        console.warn("[Make webhook] NEXT_PUBLIC_MAKE_WEBHOOK_URL non défini");
       }
     }
 

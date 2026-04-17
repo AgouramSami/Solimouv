@@ -3,93 +3,132 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "À propos — Solimouv'",
-  description: "Découvrez Up Sport!, l'association sportive parisienne qui œuvre pour l'inclusion, et le festival Solimouv'.",
+  description: "Up Sport! est une association qui croit au pouvoir du sport pour créer du lien social, lutter contre les discriminations et favoriser l'insertion.",
 };
 
 const valeurs = [
-  { mot: "Solidarité", desc: "Agir ensemble pour un sport accessible à toutes et tous." },
-  { mot: "Mixité", desc: "Croiser les genres, origines, parcours et générations." },
-  { mot: "Citoyenneté", desc: "Le sport comme vecteur d'engagement et de lien social." },
-  { mot: "Bienveillance", desc: "Un espace sans jugement, ouvert à tous les niveaux." },
-];
-
-const programmes = [
-  { titre: "Public exilé", desc: "Accompagnement des personnes réfugiées par le sport." },
-  { titre: "Public féminin", desc: "Séances dédiées pour lever les freins à la pratique féminine." },
-  { titre: "Activité physique adaptée", desc: "Sport adapté aux personnes en situation de handicap ou fragilité." },
-  { titre: "Insertion professionnelle", desc: "Le sport comme outil de confiance et de réinsertion." },
+  {
+    titre: "Inclusion Totale",
+    desc: "Des séances adaptées PMR, LGBTQIA+ friendly et pour tous les âges. Personne n'est laissé sur le banc.",
+    icon: "/figma-assets/home/sports/sport-rugby.png",
+    iconSide: "right",
+  },
+  {
+    titre: "Sécurité & Respect",
+    desc: "Un cadre bienveillant garanti par nos coachs certifiés pour une pratique en toute sérénité.",
+    icon: "/figma-assets/home/sports/sport-badminton.png",
+    iconSide: "left",
+  },
+  {
+    titre: "Bienveillance",
+    desc: "Un espace où chacun·e peut pratiquer sans jugement, à son propre rythme. L'entraide prime sur la performance.",
+    icon: "/figma-assets/home/sports/sport-tennis.png",
+    iconSide: "right",
+  },
+  {
+    titre: "Gratuité totale",
+    desc: "L'accès au sport ne devrait jamais être un privilège. Toutes les activités Solimouv' sont 100% gratuites.",
+    icon: "/figma-assets/home/sports/sport-bowling.png",
+    iconSide: "left",
+  },
 ];
 
 export default function AProposPage() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <div className="bg-[#474194] px-5 pt-10 pb-8 text-white">
-        <img src="/figma-assets/logo.png" alt="Solimouv'" className="mx-auto h-6 w-auto brightness-0 invert mb-6" />
-        <h1 className="font-heading text-2xl font-bold">À propos</h1>
-        <p className="mt-1 text-sm text-white/70">Up Sport! &amp; Solimouv&apos;</p>
+
+      {/* ── Header ── */}
+      <div className="bg-white px-5 pt-10 pb-6 text-center border-b border-gray-100">
+        <p className="font-body text-sm text-[#474194] font-medium mb-1">Festival</p>
+        <img src="/figma-assets/logo.png" alt="Solimouv'" className="mx-auto h-8 w-auto mb-1" />
+        <p className="font-body text-xs text-gray-400">Par UpSport</p>
       </div>
 
-      <div className="px-4 py-6 space-y-6">
-        {/* Up Sport! */}
-        <section>
-          <h2 className="font-heading text-xl font-bold text-[#050505] mb-2">Up Sport! — L&apos;inclusion en mouvement</h2>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            Fondée en 2016 à Paris, Up Sport! rend le sport accessible à toutes et tous,
-            quels que soient le genre, l&apos;origine sociale ou géographique, le parcours de vie.
-            L&apos;association accompagne en moyenne <strong>250 personnes par semaine</strong> à travers
-            une trentaine de séances hebdomadaires.
-          </p>
-        </section>
+      {/* ── Intro ── */}
+      <div className="px-5 pt-6 pb-2">
+        <p className="font-body text-[15px] text-[#050505] leading-relaxed text-center">
+          UpSport est une association qui croit au pouvoir du sport pour créer du lien social,
+          lutter contre les discriminations et favoriser l&apos;insertion.
+        </p>
+      </div>
 
-        {/* Valeurs */}
-        <section>
-          <h3 className="font-heading text-lg font-bold text-[#050505] mb-3">Nos valeurs</h3>
-          <div className="grid grid-cols-2 gap-3">
-            {valeurs.map((v) => (
-              <div key={v.mot} className="rounded-2xl border-l-4 border-[#474194] bg-[#474194]/5 p-4">
-                <p className="font-semibold text-[#050505] text-sm">{v.mot}</p>
-                <p className="mt-1 text-xs text-gray-600">{v.desc}</p>
+      {/* ── Nos valeurs ── */}
+      <div className="px-5 py-6">
+        <h2 className="font-heading text-2xl font-bold text-[#050505] text-center mb-6">
+          Nos valeurs
+        </h2>
+
+        <div className="space-y-4 md:grid md:grid-cols-2 md:gap-5 md:space-y-0">
+          {valeurs.map((v) => (
+            <div key={v.titre}
+              className="relative rounded-3xl border border-gray-200 bg-white px-6 py-6 text-center shadow-sm overflow-visible">
+              {/* Icon overflowing */}
+              <div
+                className={`absolute top-1/2 -translate-y-1/2 ${v.iconSide === "right" ? "-right-4" : "-left-4"}`}
+              >
+                <img
+                  src={v.icon}
+                  alt=""
+                  className="h-16 w-16 object-contain drop-shadow-sm"
+                />
               </div>
-            ))}
-          </div>
-        </section>
 
-        {/* Programmes */}
-        <section>
-          <h3 className="font-heading text-lg font-bold text-[#050505] mb-3">4 programmes structurants</h3>
-          <div className="space-y-3">
-            {programmes.map((p) => (
-              <div key={p.titre} className="rounded-2xl bg-gray-50 p-4">
-                <p className="font-semibold text-[#050505] text-sm">{p.titre}</p>
-                <p className="mt-0.5 text-xs text-gray-600">{p.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Solimouv' stats */}
-        <section className="rounded-2xl bg-[#474194] p-5 text-white">
-          <h3 className="font-heading text-lg font-bold mb-3">Solimouv&apos; — Édition 1</h3>
-          <ul className="space-y-2 text-sm text-white/80">
-            <li>✓ 500+ participants · 13 associations partenaires</li>
-            <li>✓ 92% souhaitent revenir l&apos;année prochaine</li>
-            <li>✓ 78% se sont sentis renforcés dans leur sentiment d&apos;inclusion</li>
-          </ul>
-        </section>
-
-        {/* CTAs */}
-        <div className="flex gap-3">
-          <Link href="/home"
-            className="flex-1 rounded-full bg-[#474194] py-3 text-center text-sm font-semibold text-white transition active:scale-95">
-            Voir le programme
-          </Link>
-          <Link href="/associations"
-            className="flex-1 rounded-full border border-[#474194] py-3 text-center text-sm font-semibold text-[#474194] transition active:scale-95">
-            Les associations
-          </Link>
+              <h3 className="font-heading text-[17px] font-bold text-[#050505] mb-2">
+                {v.titre}
+              </h3>
+              <p className="font-body text-[13px] text-gray-500 leading-relaxed">
+                {v.desc}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* ── Stats édition 1 ── */}
+      <div className="mx-5 mb-6 rounded-3xl bg-[#474194] px-6 py-6 text-white md:mx-auto md:max-w-2xl">
+        <h3 className="font-heading text-lg font-bold mb-4 text-center">Solimouv&apos; — Édition 1</h3>
+        <div className="grid grid-cols-3 gap-3 text-center">
+          <div>
+            <p className="font-heading text-2xl font-black">500+</p>
+            <p className="font-body text-xs text-white/70 mt-1">Participants</p>
+          </div>
+          <div>
+            <p className="font-heading text-2xl font-black">13</p>
+            <p className="font-body text-xs text-white/70 mt-1">Associations</p>
+          </div>
+          <div>
+            <p className="font-heading text-2xl font-black">92%</p>
+            <p className="font-body text-xs text-white/70 mt-1">Reviendraient</p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Mascots banner ── */}
+      <div className="bg-[#474194] px-5 py-10 flex items-end justify-center gap-4 overflow-hidden">
+        <img src="/figma-assets/home/sports/sport-badminton.png" alt="" className="h-20 w-auto object-contain -rotate-12 opacity-90" />
+        <img src="/figma-assets/home/sports/sport-tennis.png"   alt="" className="h-24 w-auto object-contain" />
+        <img src="/figma-assets/home/sports/sport-bowling.png"  alt="" className="h-20 w-auto object-contain rotate-12 opacity-90" />
+      </div>
+
+      {/* ── Footer links ── */}
+      <footer className="bg-[#474194] px-5 pb-10 pt-2">
+        <img src="/figma-assets/home/logo-white.svg" alt="Solimouv'" className="mx-auto h-6 w-auto mb-6" />
+        <nav className="flex flex-col items-center gap-3 font-body text-[15px] text-white/80">
+          <Link href="/contact" className="hover:text-white transition">Contactez-nous</Link>
+          <Link href="/programme" className="hover:text-white transition">A l&apos;affiche</Link>
+          <Link href="/associations" className="hover:text-white transition">Associations</Link>
+          <Link href="/a-propos" className="hover:text-white transition">A Propos</Link>
+        </nav>
+        <div className="mt-6 border-t border-white/20 pt-5 flex flex-col items-center gap-2">
+          <Link href="/confidentialite" className="font-body text-xs text-white/50 underline hover:text-white/80 transition">
+            Politique de confidentialité
+          </Link>
+          <Link href="/cgu" className="font-body text-xs text-white/50 underline hover:text-white/80 transition">
+            Conditions d&apos;utilisation
+          </Link>
+          <p className="font-body text-xs text-white/40 mt-1">© 2026 Solimouv. Tous droits réservés.</p>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -41,7 +41,7 @@ export default function Navigation() {
           aria-label="Solimouv' — accueil"
         >
           <Image
-            src="/logo.svg"
+            src="/figma-assets/logo.png"
             alt="Solimouv'"
             width={160}
             height={28}

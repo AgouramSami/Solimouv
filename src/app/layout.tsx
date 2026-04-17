@@ -1,24 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Fredoka } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-
-// Body font
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-// Heading font — placeholder Chunko Bold (DA : remplacer par la vraie police)
-// Fredoka est la Google Font la plus proche du style chunky/arrondi ciblé
-const fredoka = Fredoka({
-  subsets: ["latin"],
-  weight: ["700"],
-  variable: "--font-heading",
-  display: "swap",
-});
+// Fonts chargées via CSS @import Fontshare (globals.css) : Cabinet Grotesk + Author
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://solimouv-git-vercel-react-server-70cd75-samis-projects-8dc87455.vercel.app"), // ← à mettre à jour après déploiement
@@ -73,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F97316",
+  themeColor: "#D81D61",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -85,7 +67,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={`${inter.variable} ${fredoka.variable}`}>
+    <html lang="fr">
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
@@ -108,18 +90,8 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="flex min-h-screen flex-col font-body">
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-brand-primary focus:px-4 focus:py-2 focus:text-white"
-        >
-          Aller au contenu principal
-        </a>
-        <Navigation />
-        <main id="main-content" className="flex-1 pb-20 md:pb-0">
-          {children}
-        </main>
-        <Footer />
+      <body className="font-body">
+        {children}
       </body>
     </html>
   );

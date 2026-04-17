@@ -2,27 +2,106 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Users, Settings } from "lucide-react";
 
-const MascotIcon = () => (
-  <svg viewBox="0 0 28 28" fill="none" className="h-7 w-7">
-    <rect x="3" y="3" width="22" height="22" rx="6" stroke="white" strokeWidth="2" />
-    <circle cx="10" cy="14" r="2.5" fill="#C11720" />
-    <circle cx="18" cy="14" r="2.5" fill="#C11720" />
-  </svg>
-);
+function IconAccueil() {
+  return (
+    <div className="relative size-[46px]">
+      <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/navbar/nav-home-bg.svg" />
+      <div className="absolute" style={{ inset: "11.39% 19.6% 21.8% 19.61%" }}>
+        <div className="absolute" style={{ inset: "-2.21% -2.43%" }}>
+          <img alt="" className="block size-full max-w-none" src="/figma-assets/navbar/nav-home-vector.svg" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function IconAssociation() {
+  return (
+    <div className="relative size-[46px]">
+      <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/navbar/nav-asso-bg.svg" />
+    </div>
+  );
+}
+
+function IconCompte() {
+  return (
+    <div className="relative size-[46px]">
+      <div
+        className="absolute flex items-center justify-center"
+        style={{ inset: "0 0 1.74% 0", containerType: "size" }}
+      >
+        <div
+          style={{
+            flexShrink: 0,
+            height: "hypot(26.4078cqw, 73.5922cqh)",
+            width: "hypot(73.5922cqw, 26.4078cqh)",
+            transform: "rotate(-19.74deg)",
+          }}
+        >
+          <div className="relative size-full">
+            <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/navbar/nav-compte-v1.svg" />
+          </div>
+        </div>
+      </div>
+      <div
+        className="absolute flex items-center justify-center"
+        style={{ inset: "11.79% 0.95% 0 9.29%", containerType: "size" }}
+      >
+        <div
+          style={{
+            flexShrink: 0,
+            height: "hypot(26.4078cqw, 73.5922cqh)",
+            width: "hypot(73.5922cqw, 26.4078cqh)",
+            transform: "rotate(-19.74deg)",
+          }}
+        >
+          <div className="relative size-full">
+            <div className="absolute" style={{ inset: "-1.57% -1.55%" }}>
+              <img alt="" className="block size-full max-w-none" src="/figma-assets/navbar/nav-compte-v2.svg" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="absolute" style={{ inset: "44.57% 28.27% 39.27% 56.48%" }}>
+        <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/navbar/nav-compte-v3.svg" />
+      </div>
+      <div className="absolute" style={{ inset: "45.13% 54.29% 39.64% 30.1%" }}>
+        <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/navbar/nav-compte-v4.svg" />
+      </div>
+      <div className="absolute" style={{ inset: "52.43% 56.72% 40.62% 36.23%" }}>
+        <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/navbar/nav-compte-v5.svg" />
+      </div>
+      <div className="absolute" style={{ inset: "53.41% 30.41% 39.64% 62.54%" }}>
+        <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/navbar/nav-compte-v6.svg" />
+      </div>
+    </div>
+  );
+}
+
+function IconParametres() {
+  return (
+    <div className="relative size-[46px]">
+      <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/navbar/nav-params-bg.svg" />
+      <div className="absolute" style={{ inset: "18.59% 18.79% 18.23% 16.19%" }}>
+        <div className="absolute" style={{ inset: "-3.19% -2.31% -2.89% -2.45%" }}>
+          <img alt="" className="block size-full max-w-none" src="/figma-assets/navbar/nav-params-v1.svg" />
+        </div>
+      </div>
+      <div className="absolute" style={{ inset: "41.51% 43.49% 41.42% 38.16%" }}>
+        <div className="absolute" style={{ inset: "-8.66% -8.05% -8.67% -8.06%" }}>
+          <img alt="" className="block size-full max-w-none" src="/figma-assets/navbar/nav-params-v2.svg" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const navItems = [
-  { href: "/home", label: "Accueil", Icon: ({ active }: { active: boolean }) => (
-    <Home className="h-6 w-6" stroke="white" strokeWidth={active ? 2.5 : 1.8} />
-  )},
-  { href: "/associations", label: "Association", Icon: ({ active }: { active: boolean }) => (
-    <Users className="h-6 w-6" stroke="white" strokeWidth={active ? 2.5 : 1.8} />
-  )},
-  { href: "/compte", label: "Mon compte", Icon: () => <MascotIcon /> },
-  { href: "/parametres", label: "Paramètres", Icon: ({ active }: { active: boolean }) => (
-    <Settings className="h-6 w-6" stroke="white" strokeWidth={active ? 2.5 : 1.8} />
-  )},
+  { href: "/home",         label: "Accueil",    Icon: IconAccueil },
+  { href: "/associations", label: "Association", Icon: IconAssociation },
+  { href: "/compte",       label: "Mon compte",  Icon: IconCompte },
+  { href: "/parametres",   label: "Paramètres",  Icon: IconParametres },
 ];
 
 export default function AppBottomNav() {
@@ -30,10 +109,10 @@ export default function AppBottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-40 bg-[#F5F4F2] pb-safe"
+      className="fixed bottom-0 inset-x-0 z-40 bg-[#faf9f5] pb-[env(safe-area-inset-bottom)]"
       aria-label="Navigation principale"
     >
-      <div className="flex items-center justify-around px-2 py-3">
+      <div className="flex items-center justify-around gap-9 px-14 pt-[15px] pb-[14px]">
         {navItems.map(({ href, label, Icon }) => {
           const active = pathname === href || pathname.startsWith(href + "/");
           return (
@@ -41,22 +120,11 @@ export default function AppBottomNav() {
               key={href}
               href={href}
               aria-current={active ? "page" : undefined}
-              className="flex flex-col items-center gap-1.5 min-w-[72px]"
+              className="flex flex-col items-center gap-0 transition-opacity"
+              style={{ opacity: active ? 1 : 0.55 }}
             >
-              <div
-                className={`flex h-14 w-14 items-center justify-center rounded-full transition-all duration-200 ${
-                  active
-                    ? "bg-[#474194] shadow-[0_4px_12px_rgba(71,65,148,0.35)] scale-105"
-                    : "bg-[#474194]/85"
-                }`}
-              >
-                <Icon active={active} />
-              </div>
-              <span
-                className={`text-xs leading-none transition-colors ${
-                  active ? "font-semibold text-[#474194]" : "font-medium text-[#474194]/70"
-                }`}
-              >
+              <Icon />
+              <span className="mt-0 font-[Author,sans-serif] text-[16px] leading-6 text-[#474194] text-center whitespace-nowrap">
                 {label}
               </span>
             </Link>

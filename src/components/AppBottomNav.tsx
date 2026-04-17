@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+// ─── Raw Figma icon components (46×46px as per Figma 158-1802) ───────────────
+
 function IconAccueil() {
   return (
     <div className="relative size-[46px]">
@@ -76,7 +78,7 @@ export const navItems = [
   { href: "/parametres",   label: "Paramètres",  Icon: IconParametres },
 ];
 
-// ─── Scaled icon for desktop top nav ─────────────────────────────────────────
+// ─── Scaled icon wrapper — renders 46px icon at any target size ───────────────
 export function NavIcon({ Icon, size = 32 }: { Icon: () => React.JSX.Element; size?: number }) {
   const scale = size / 46;
   return (
@@ -92,13 +94,16 @@ export function NavIcon({ Icon, size = 32 }: { Icon: () => React.JSX.Element; si
 export default function AppBottomNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
 
+  // Display size for icons: Figma specifies 46px but we render at 38px to
+  // keep the nav compact on real devices (label + icon total ≈ 72px)
+  const ICON_SIZE = 38;
+
   return (
     <nav
       className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-[#faf9f5] pb-[env(safe-area-inset-bottom)] border-t border-black/5"
       aria-label="Navigation principale"
     >
-      {/* px-[var(--espace/1,4px)] pt-[15px] pb-[14px] gap-[36px] — Figma 158-1802 */}
-      <div className="flex items-center justify-around px-[4px] pt-[15px] pb-[14px]">
+      <div className="flex items-center justify-around pt-[10px] pb-[8px]">
         {navItems.map(({ href, label, Icon }) => {
           const active = pathname === href || pathname.startsWith(href + "/");
           const isCompte = href === "/compte";
@@ -107,19 +112,34 @@ export default function AppBottomNav({ isAdmin = false }: { isAdmin?: boolean })
               key={href}
               href={href}
               aria-current={active ? "page" : undefined}
-              className="flex flex-col items-center gap-0 flex-1 min-w-0 transition-opacity"
+              className="flex flex-col items-center gap-[2px] flex-1 min-w-0 transition-opacity"
               style={{ opacity: active ? 1 : 0.55 }}
             >
-              <div className="relative shrink-0">
-                <Icon />
+              {/* Icon scaled from 46px (Figma) to ICON_SIZE */}
+              <div className="relative shrink-0" style={{ width: ICON_SIZE, height: ICON_SIZE }}>
+                <div style={{ overflow: "hidden", width: ICON_SIZE, height: ICON_SIZE }}>
+                  <div style={{
+                    transform: `scale(${ICON_SIZE / 46})`,
+                    transformOrigin: "0 0",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                  }}>
+                    <Icon />
+                  </div>
+                </div>
+                {/* Admin badge on Mon compte */}
                 {isCompte && isAdmin && (
-                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#d81d61] text-[9px] font-bold text-white leading-none">
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#d81d61] text-[9px] font-bold text-white leading-none z-10">
                     A
                   </span>
                 )}
               </div>
-              {/* Figma: font/size/s = 16px, Author Regular, text-[#474194] */}
-              <span className="font-[Author,sans-serif] text-[16px] leading-6 text-[#474194] text-center whitespace-nowrap">
+              {/* Label — Author Regular, size adapted for mobile readability */}
+              <span
+                className="font-[Author,sans-serif] leading-tight text-[#474194] text-center w-full"
+                style={{ fontSize: 13 }}
+              >
                 {label}
               </span>
             </Link>

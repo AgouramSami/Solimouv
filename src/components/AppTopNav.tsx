@@ -2,14 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { navItems, NavIcon } from "./AppBottomNav";
+import { navItems } from "./AppBottomNav";
 
 export default function AppTopNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
   const isHome = pathname === "/home";
-
-  // Icon size in the top nav: Figma icons scaled to 28px for desktop bar
-  const ICON_SIZE = 28;
 
   return (
     <header
@@ -21,23 +18,19 @@ export default function AppTopNav({ isAdmin = false }: { isAdmin?: boolean }) {
         <img src="/figma-assets/logo.png" alt="Solimouv'" className="h-[30px] w-auto" />
       </Link>
 
-      {/* Nav tabs — Figma icons at 28px + label, centered */}
+      {/* Nav tabs — labels only on desktop */}
       <nav className="flex items-center justify-center gap-2 flex-1">
-        {navItems.map(({ href, label, Icon }) => {
+        {navItems.map(({ href, label }) => {
           const active = pathname === href || pathname.startsWith(href + "/");
           return (
             <Link
               key={href}
               href={active ? href : (isHome && href === "/home" ? "#festival" : href)}
               aria-current={active ? "page" : undefined}
-              className={`flex items-center gap-2 rounded-full px-3 py-1.5 transition-all ${
+              className={`flex items-center rounded-full px-4 py-1.5 transition-all ${
                 active ? "bg-[#474194]/10" : "hover:bg-black/5"
               }`}
             >
-              {/* Figma icon scaled to ICON_SIZE */}
-              <div style={{ opacity: active ? 1 : 0.55 }}>
-                <NavIcon Icon={Icon} size={ICON_SIZE} />
-              </div>
               <span
                 className={`font-[Author,sans-serif] whitespace-nowrap transition-colors ${
                   active ? "text-[#474194]" : "text-[#474194]/60"

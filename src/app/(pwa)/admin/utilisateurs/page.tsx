@@ -24,6 +24,9 @@ export default function UtilisateursPage() {
   const [search, setSearch] = useState("");
   const [filterOnboarded, setFilterOnboarded] = useState<"all" | "yes" | "no">("all");
   const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmId, setConfirmId]   = useState<string | null>(null);
+  const [confirmName, setConfirmName] = useState("");
 
   async function load() {
     setLoading(true);
@@ -36,6 +39,20 @@ export default function UtilisateursPage() {
   }
 
   useEffect(() => { load(); }, []);
+
+  async function deleteUser(id: string) {
+    setDeletingId(id);
+    const res = await fetch("/api/admin/delete-user", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: id }),
+    });
+    if (res.ok) {
+      await load();
+    }
+    setDeletingId(null);
+    setConfirmId(null);
+  }
 
   async function toggleRole(id: string, currentRole: string | null) {
     setTogglingId(id);
@@ -57,6 +74,35 @@ export default function UtilisateursPage() {
 
   return (
     <div>
+
+      {/* ── Modale de confirmation suppression ── */}
+      {confirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
+            <h2 className="font-heading text-lg font-bold text-gray-900 mb-2">Supprimer le compte</h2>
+            <p className="text-sm text-gray-600 mb-6">
+              Confirmer la suppression de <strong>{confirmName}</strong> ?
+              Cette action est <span className="text-red-600 font-semibold">irréversible</span> — toutes les données seront effacées.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmId(null)}
+                className="flex-1 rounded-xl border border-gray-200 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={() => deleteUser(confirmId)}
+                disabled={deletingId === confirmId}
+                className="flex-1 rounded-xl bg-red-600 py-2.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-50 transition"
+              >
+                {deletingId === confirmId ? "Suppression…" : "Supprimer"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Utilisateurs</h1>
         <p className="text-sm text-gray-500 mt-1">{users.length} inscrit(s) · {users.filter((u) => u.role === "admin").length} admin(s)</p>
@@ -155,21 +201,32 @@ export default function UtilisateursPage() {
                         </span>
                       </td>
                       <td className="px-4 py-3">
-                        <button
-                          onClick={() => toggleRole(u.id, u.role)}
-                          disabled={togglingId === u.id}
-                          className={`rounded-lg px-3 py-1 text-xs font-medium transition disabled:opacity-50 ${
-                            u.role === "admin"
-                              ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                              : "bg-[#474194] text-white hover:bg-[#3a3578]"
-                          }`}
-                        >
-                          {togglingId === u.id
-                            ? "…"
-                            : u.role === "admin"
-                            ? "Rétrograder"
-                            : "Passer admin"}
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => toggleRole(u.id, u.role)}
+                            disabled={togglingId === u.id}
+                            className={`rounded-lg px-3 py-1 text-xs font-medium transition disabled:opacity-50 ${
+                              u.role === "admin"
+                                ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                : "bg-[#474194] text-white hover:bg-[#3a3578]"
+                            }`}
+                          >
+                            {togglingId === u.id ? "…" : u.role === "admin" ? "Rétrograder" : "Passer admin"}
+                          </button>
+                          <button
+                            onClick={() => {
+                              setConfirmId(u.id);
+                              setConfirmName(
+                                u.prenom || u.nom
+                                  ? `${u.prenom ?? ""} ${u.nom ?? ""}`.trim()
+                                  : u.full_name ?? "cet utilisateur"
+                              );
+                            }}
+                            className="rounded-lg px-3 py-1 text-xs font-medium bg-red-50 text-red-600 hover:bg-red-100 transition"
+                          >
+                            Supprimer
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );

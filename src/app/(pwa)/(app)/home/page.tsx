@@ -95,37 +95,6 @@ function SportStickerDesktop() {
   );
 }
 
-// ─── Bowling mascot (same icon, no pink bg) — node 403:5738 decoration ────────
-function BowlingMascot({ width, height }: { width: number; height: number }) {
-  return (
-    <div className="relative overflow-clip" style={{ width, height }}>
-      <div className="absolute flex items-center justify-center" style={{ inset: "0 4.65% 26.85% -0.01%", containerType: "size" }}>
-        <div className="relative flex-none -rotate-45" style={{ height: "hypot(50cqw,50cqh)", width: "hypot(50cqw,50cqh)" }}>
-          <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/bowling-v0.svg" />
-        </div>
-      </div>
-      <div className="absolute" style={{ inset: "0 11.62% 66.46% 3.95%" }}><img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/bowling-v1.svg" /></div>
-      <div className="absolute" style={{ inset: "15.57% 55.68% 75.1% 28.11%" }}><img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/bowling-v2.svg" /></div>
-      <div className="absolute" style={{ inset: "17.33% 57.25% 77.46% 35.96%" }}><img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/bowling-v3.svg" /></div>
-      <div className="absolute" style={{ inset: "15.57% 36.11% 75.1% 47.69%" }}><img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/bowling-v4.svg" /></div>
-      <div className="absolute" style={{ inset: "17.33% 37.67% 77.46% 55.54%" }}><img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/bowling-v5.svg" /></div>
-      <div className="absolute" style={{ inset: "26.78% 0 0.01% 62.33%" }}><img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/bowling-pin.svg" /></div>
-    </div>
-  );
-}
-
-// ─── Green triangle mascot — hero right (node 403:5665) ──────────────────────
-function MascotTriangle() {
-  return (
-    <svg viewBox="0 0 424 358" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-      <polygon points="0,358 130,0 424,280" fill="#b9d135" />
-      <ellipse cx="188" cy="212" rx="44.5" ry="67" fill="#e8e8d0" />
-      <circle cx="182" cy="241" r="25.4" fill="#c11720" />
-      <ellipse cx="313" cy="184" rx="44.5" ry="67" fill="#e8e8d0" />
-      <circle cx="307" cy="211" r="25.4" fill="#c11720" />
-    </svg>
-  );
-}
 
 // ─── Desktop countdown tile (109×64, white, violet text) ─────────────────────
 function DesktopCountTile({ value, label }: { value: number; label: string }) {
@@ -144,13 +113,15 @@ function DesktopCountTile({ value, label }: { value: number; label: string }) {
   );
 }
 
-// ─── Mobile countdown tile ────────────────────────────────────────────────────
-function CountTile({ value, label }: { value: number; label: string }) {
+// ─── Mobile countdown tile (compact, 2-up) ───────────────────────────────────
+function MobileCountTile({ value, label }: { value: number; label: string }) {
   return (
-    <div className="flex-1 bg-white rounded-[16px] px-[15px] py-[12px]">
-      <div className="flex items-end gap-0 text-[#474194]">
-        <span className="font-heading text-[36px] font-bold leading-[40px] tabular-nums">{String(value).padStart(2, "0")}</span>
-        <span className="font-body text-[16px] leading-6">{label}</span>
+    <div className="bg-white rounded-[14px]" style={{ padding: "10px 14px" }}>
+      <div className="flex items-end gap-0 text-[#474194] whitespace-nowrap">
+        <span className="font-heading font-bold tabular-nums" style={{ fontSize: 30, lineHeight: "34px" }}>
+          {String(value).padStart(2, "0")}
+        </span>
+        <span className="font-body" style={{ fontSize: 14, lineHeight: "22px" }}>{label}</span>
       </div>
     </div>
   );
@@ -361,10 +332,8 @@ export default function HomePage() {
                 Ça approche, plus que :
               </p>
               <div className="flex gap-2 mt-2">
-                <DesktopCountTile value={days}    label="Jours"    />
-                <DesktopCountTile value={hours}   label="Heures"   />
-                <DesktopCountTile value={minutes} label="Minutes"  />
-                <DesktopCountTile value={seconds} label="Secondes" />
+                <DesktopCountTile value={days}  label="Jours"  />
+                <DesktopCountTile value={hours} label="Heures" />
               </div>
             </div>
 
@@ -382,13 +351,6 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Mascot triangle — right side, exact Figma: x=472, y=64 */}
-            <div className="absolute overflow-hidden"
-              style={{ left: 472, top: 0, width: 507, height: 421, borderRadius: "0 32px 32px 0" }}>
-              <div style={{ position: "absolute", left: 0, top: 64, width: 424, height: 358 }}>
-                <MascotTriangle />
-              </div>
-            </div>
           </div>
 
           {/* Two-column section */}
@@ -397,11 +359,6 @@ export default function HomePage() {
             {/* LEFT — Tu es inscrit (478px) */}
             <div className="relative bg-[#2e7e33] flex-shrink-0 overflow-visible"
               style={{ width: 478, minHeight: 532, borderRadius: 32 }}>
-
-              {/* Bowling mascot deco — overflows top (x=9.86, y=-111, 160×142) */}
-              <div className="absolute pointer-events-none" style={{ left: 10, top: -111 }}>
-                <BowlingMascot width={160} height={142} />
-              </div>
 
               <div className="absolute" style={{ left: 19, top: 41, right: 19 }}>
                 <p className="font-heading font-bold text-white text-center" style={{ fontSize: 32, lineHeight: "39px" }}>
@@ -539,47 +496,61 @@ export default function HomePage() {
           </button>
         </div>
 
-        {/* Hero violet */}
-        <div className="mx-4">
-          <div className="relative bg-[#474194] rounded-[32px] overflow-hidden flex flex-col items-center gap-9 pt-[22px] pb-[22px] px-4">
-            <div className="absolute" style={{ width: 60, height: 46, top: 8, right: 9 }}>
-              <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/hero-deco.svg" />
-            </div>
-            <div className="flex flex-col gap-2 items-center w-full">
-              <p className="font-body text-[36px] text-white text-center">Le festival</p>
-              <div className="h-[40px] w-[244px]">
-                <img alt="Solimouv'" className="block h-full w-full object-contain" src="/figma-assets/home/logo-white.svg" />
+        {/* Hero violet — mascotte droite + 2 tuiles (maquette) */}
+        <div className="mx-4 relative" style={{ overflow: "visible" }}>
+          {/* Volant gauche — déborde du card */}
+          <div className="absolute pointer-events-none z-10" style={{ left: -22, top: 32 }}>
+            <img alt="" width={52} height={40} src="/figma-assets/home/mascot-sport.svg" />
+          </div>
+
+          <div className="relative bg-[#474194] rounded-[32px] overflow-hidden" style={{ minHeight: 284 }}>
+            {/* Contenu gauche */}
+            <div className="absolute flex flex-col justify-between" style={{ left: 22, top: 22, right: "44%", bottom: 22 }}>
+              <div className="flex flex-col gap-[6px]">
+                <p className="font-body text-white" style={{ fontSize: 22, lineHeight: "26px" }}>Le Festival</p>
+                <div style={{ height: 30, width: 160 }}>
+                  <img alt="Solimouv'" className="block h-full w-auto" src="/figma-assets/home/logo-white.svg" />
+                </div>
+                <p className="font-body text-white" style={{ fontSize: 13, lineHeight: "18px" }}>
+                  Le sport pour toutes et tous, sans exception.
+                </p>
               </div>
-              <p className="font-body text-[18px] text-white text-center">Le sport pour toutes et tous, sans exception.</p>
-            </div>
-            {/* Mobile countdown: 4 tiles */}
-            <div className="flex flex-col gap-2 items-center w-full px-2">
-              <p className="font-body text-[18px] text-white text-center">Ça approche, plus que :</p>
-              <div className="grid grid-cols-2 gap-2 w-full max-w-[280px]">
-                <CountTile value={days}    label="J" />
-                <CountTile value={hours}   label="H" />
-                <CountTile value={minutes} label="Min" />
-                <CountTile value={seconds} label="Sec" />
+
+              <div>
+                <p className="font-body text-white mb-[6px]" style={{ fontSize: 13 }}>Ça approche, plus que :</p>
+                <div className="flex gap-2">
+                  <MobileCountTile value={days}  label="Jours"  />
+                  <MobileCountTile value={hours} label="Heures" />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-[8px]">
+                <Link href="/quiz"
+                  className="bg-[#050505] rounded-full flex items-center justify-center font-body text-white"
+                  style={{ height: 40, fontSize: 14 }}>
+                  Trouve ton sport
+                </Link>
+                <Link href="#programme"
+                  className="bg-white rounded-full flex items-center justify-center font-body text-[#050505]"
+                  style={{ height: 40, fontSize: 14 }}>
+                  Découvrir le programme
+                </Link>
               </div>
             </div>
-            <div className="flex flex-col gap-2 items-center w-full">
-              <Link href="/quiz" className="bg-[#050505] rounded-full h-[66px] flex items-center justify-center w-[291px] font-body text-[18px] text-white text-center">
-                Trouve ton sport
-              </Link>
-              <Link href="#programme" className="font-body text-[18px] text-white underline text-center">
-                Découvrir le programme
-              </Link>
-            </div>
+
+          </div>
+
+          {/* Volant droit — déborde du card */}
+          <div className="absolute pointer-events-none z-10" style={{ right: -22, bottom: 20 }}>
+            <img alt="" width={52} height={40} src="/figma-assets/home/mascot-sport.svg"
+              style={{ transform: "scaleX(-1)" }} />
           </div>
         </div>
 
         {/* Green — inscriptions */}
         <section id="programme" className="mt-0">
           <div className="bg-[#2e7e33] px-4 py-[34px] relative overflow-visible">
-            <div className="absolute overflow-clip pointer-events-none" style={{ width: 132, height: 117, left: 8, top: -103 }}>
-              <BowlingMascot width={132} height={117} />
-            </div>
-            <div className="flex flex-col gap-2 mb-7">
+              <div className="flex flex-col gap-2 mb-7">
               <h2 className="font-heading font-bold text-[32px] leading-8 text-white">Tu es inscrit...</h2>
               <p className="font-body text-[18px] text-white">Retrouve tes inscriptions</p>
             </div>

@@ -104,7 +104,7 @@ const navItems = [
   { href: "/parametres",   label: "Paramètres",  Icon: IconParametres },
 ];
 
-export default function AppBottomNav() {
+export default function AppBottomNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
 
   return (
@@ -115,6 +115,7 @@ export default function AppBottomNav() {
       <div className="flex items-center justify-around gap-9 px-14 pt-[15px] pb-[14px]">
         {navItems.map(({ href, label, Icon }) => {
           const active = pathname === href || pathname.startsWith(href + "/");
+          const isCompte = href === "/compte";
           return (
             <Link
               key={href}
@@ -123,7 +124,14 @@ export default function AppBottomNav() {
               className="flex flex-col items-center gap-0 transition-opacity"
               style={{ opacity: active ? 1 : 0.55 }}
             >
-              <Icon />
+              <div className="relative">
+                <Icon />
+                {isCompte && isAdmin && (
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#d81d61] text-[9px] font-bold text-white leading-none">
+                    A
+                  </span>
+                )}
+              </div>
               <span className="mt-0 font-[Author,sans-serif] text-[16px] leading-6 text-[#474194] text-center whitespace-nowrap">
                 {label}
               </span>

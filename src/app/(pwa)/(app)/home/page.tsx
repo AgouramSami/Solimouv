@@ -165,31 +165,6 @@ export default function HomePage() {
     <div className="min-h-screen bg-white md:bg-[#f5eedb]">
 
       {/* ══════════════════════════════════════
-          DESKTOP — Top nav
-      ══════════════════════════════════════ */}
-      <header className="hidden md:block sticky top-0 z-40 bg-[#f5eedb]/95 backdrop-blur-sm border-b border-black/5">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-4">
-          <Link href="/home">
-            <img src="/figma-assets/home/logo-desktop-dark.png" alt="Solimouv'" className="h-8 w-auto" />
-          </Link>
-          <nav className="flex items-center gap-8">
-            {[
-              { href: "#festival", label: "Festival" },
-              { href: "#programme", label: "Programme" },
-              { href: "#pour-vous", label: "Pour vous" },
-              { href: "/a-propos", label: "À propos" },
-            ].map((l) => (
-              <a key={l.label} href={l.href} className="text-sm font-medium text-[#050505] hover:opacity-60 transition-opacity">{l.label}</a>
-            ))}
-          </nav>
-          <div className="flex items-center gap-4">
-            <Link href="/compte" className="text-sm font-medium text-[#050505] hover:opacity-60 transition-opacity">Mon compte</Link>
-            <Link href="/quiz" className="rounded-full bg-[#050505] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90 transition">Trouve ton sport</Link>
-          </div>
-        </div>
-      </header>
-
-      {/* ══════════════════════════════════════
           MOBILE — Logo
       ══════════════════════════════════════ */}
       <div className="md:hidden flex items-center justify-center pt-10 pb-3 px-4">

@@ -47,6 +47,55 @@ function SportSticker() {
   );
 }
 
+// ─── Desktop sport sticker (slightly larger, 60×64) ───────────────────────────
+function SportStickerDesktop() {
+  return (
+    <div className="relative shrink-0" style={{ width: 60, height: 64 }}>
+      <div className="absolute inset-0 bg-[#d81d61] rounded-[16px]" />
+      <div className="absolute overflow-clip" style={{ top: 2.4, left: 0.7, width: 59, height: 59 }}>
+        <div className="absolute flex items-center justify-center" style={{ inset: "0 4.65% 26.85% -0.01%", containerType: "size" }}>
+          <div className="relative flex-none -rotate-45" style={{ height: "hypot(50cqw,50cqh)", width: "hypot(50cqw,50cqh)" }}>
+            <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/sport-v1.svg" />
+          </div>
+        </div>
+        <div className="absolute" style={{ inset: "0 11.62% 66.46% 3.95%" }}><img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/sport-v2.svg" /></div>
+        <div className="absolute" style={{ inset: "15.57% 55.68% 75.1% 28.11%" }}><img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/sport-v3.svg" /></div>
+        <div className="absolute" style={{ inset: "17.33% 57.25% 77.46% 35.96%" }}><img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/sport-v4.svg" /></div>
+        <div className="absolute" style={{ inset: "15.57% 36.11% 75.1% 47.69%" }}><img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/sport-v5.svg" /></div>
+        <div className="absolute" style={{ inset: "17.33% 37.67% 77.46% 55.54%" }}><img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/sport-v6.svg" /></div>
+        <div className="absolute" style={{ inset: "26.78% 0 0.01% 62.33%" }}><img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/sport-group.svg" /></div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Green triangle mascot (hero right side) — inline SVG from Figma 403:5665 ─
+function MascotTriangle() {
+  return (
+    <svg viewBox="0 0 424 358" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      {/* Main triangle body */}
+      <polygon points="0,358 130,0 424,280" fill="#b9d135" />
+      {/* Left eye — cream oval */}
+      <ellipse cx="188" cy="212" rx="44.5" ry="67" fill="#e8e8d0" />
+      {/* Left pupil — red circle */}
+      <circle cx="182" cy="241" r="25.4" fill="#c11720" />
+      {/* Right eye — cream oval */}
+      <ellipse cx="313" cy="184" rx="44.5" ry="67" fill="#e8e8d0" />
+      {/* Right pupil — red circle */}
+      <circle cx="307" cy="211" r="25.4" fill="#c11720" />
+    </svg>
+  );
+}
+
+// ─── Badminton shuttlecock deco — using existing asset ────────────────────────
+function BadmintonDeco({ width, height, rotate = 0 }: { width: number; height: number; rotate?: number }) {
+  return (
+    <div style={{ width, height, transform: `rotate(${rotate}deg)`, overflow: "visible" }}>
+      <img alt="" className="block size-full object-contain" src="/figma-assets/home/mascot-sport.svg" />
+    </div>
+  );
+}
+
 // ─── Mobile countdown tile ────────────────────────────────────────────────────
 function CountTile({ value, label }: { value: number; label: string }) {
   return (
@@ -59,12 +108,91 @@ function CountTile({ value, label }: { value: number; label: string }) {
   );
 }
 
-// ─── Desktop countdown box ────────────────────────────────────────────────────
-function CountBox({ value, label }: { value: number; label: string }) {
+// ─── Desktop countdown tile — exact Figma (109×64, white card, violet text) ──
+function DesktopCountTile({ value, label }: { value: number; label: string }) {
   return (
-    <div className="rounded-2xl bg-white/85 px-5 py-3 text-center min-w-[78px]">
-      <div className="text-3xl font-black font-heading text-[#050505] leading-none tabular-nums">{String(value).padStart(2, "0")}</div>
-      <div className="mt-1.5 text-[10px] font-bold tracking-widest text-gray-600 uppercase">{label}</div>
+    <div className="bg-white border border-white rounded-[16px] flex flex-col items-start"
+      style={{ width: 109, height: 64, padding: "12px 15px" }}>
+      <div className="flex items-end gap-0 text-[#474194] whitespace-nowrap">
+        <span className="font-heading font-bold tabular-nums" style={{ fontSize: 36, lineHeight: "40px" }}>
+          {String(value).padStart(2, "0")}
+        </span>
+        <span className="font-body text-center" style={{ fontSize: 16, lineHeight: "24px" }}>
+          {label}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// ─── Desktop activity row (inscriptions) ─────────────────────────────────────
+function DesktopActivityRow({ time, name, room, duration, hasBadge }: {
+  time: string; name: string; room: string; duration: string; hasBadge?: boolean;
+}) {
+  return (
+    <div className="flex items-start" style={{ gap: 0 }}>
+      {/* Check bullet */}
+      <div className="relative shrink-0" style={{ width: 32, height: 31, marginTop: 38 }}>
+        <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/check-bullet.svg" />
+      </div>
+      {/* Activity card */}
+      <div className="relative bg-white border border-[#cdcdcd] rounded-[16px] shadow-[0px_2px_1px_0px_rgba(0,0,0,0.05)] overflow-hidden"
+        style={{ marginLeft: 50, width: 389, height: 108 }}>
+        <div className="absolute flex items-start justify-between"
+          style={{ left: 20.65, top: 24.29, width: 347.38, height: 60 }}>
+          <div>
+            <div className="flex items-end gap-2 text-[#050505]">
+              <span className="font-heading font-bold" style={{ fontSize: 24, lineHeight: "30px" }}>{time}</span>
+              <span className="font-body" style={{ fontSize: 20, lineHeight: "30px" }}>{name}</span>
+            </div>
+            <p className="font-body text-[#050505]" style={{ fontSize: 18, lineHeight: "30px" }}>{room}</p>
+          </div>
+          <span className="font-body font-bold text-black whitespace-nowrap" style={{ fontSize: 20, lineHeight: "30px" }}>{duration}</span>
+        </div>
+        {hasBadge && (
+          <div className="absolute flex items-center justify-center"
+            style={{ inset: "60.28% -4.32% -13.18% 82.31%", containerType: "size" }}>
+            <div className="relative flex-none"
+              style={{ height: "hypot(69.4cqh,10.6cqw)", width: "hypot(89.4cqw,30.6cqh)", transform: "rotate(12.86deg)" }}>
+              <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/card-badge.svg" />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Desktop "Pour vous" card (162×164) ──────────────────────────────────────
+function PourVousCard({ name, duration, room }: { name: string; duration: string; room: string }) {
+  return (
+    <div className="bg-white border border-[#95989a] rounded-[16px] shadow-[0px_2px_5px_0px_rgba(0,0,0,0.05)] flex flex-col items-start"
+      style={{ width: 162.35, height: 164.58, padding: "12px 11px" }}>
+      <div className="flex flex-col items-center text-center mx-auto" style={{ width: 101 }}>
+        <span className="font-heading font-bold text-[#050505]" style={{ fontSize: 24, lineHeight: "24px" }}>{name}</span>
+        <span className="font-body font-bold text-black" style={{ fontSize: 20, lineHeight: "24px" }}>{duration}</span>
+        <span className="font-body text-[#050505]" style={{ fontSize: 18, lineHeight: "24px" }}>{room}</span>
+      </div>
+      <div className="bg-[#050505] rounded-full flex items-center justify-center w-full mt-auto"
+        style={{ height: 52 }}>
+        <span className="font-body text-white" style={{ fontSize: 20, lineHeight: "24px" }}>Rejoindre</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── Mobile reco card ─────────────────────────────────────────────────────────
+function RecoCard({ name, duration, room }: { name: string; duration: string; room: string }) {
+  return (
+    <div className="bg-white border border-[#95989a] rounded-[16px] shadow-[0px_2px_5px_0px_rgba(0,0,0,0.05)] shrink-0 w-[162px] px-[11px] py-[12px] flex flex-col gap-[16px]">
+      <div className="flex flex-col items-center text-center mx-auto">
+        <span className="font-heading font-bold text-[24px] text-[#050505]">{name}</span>
+        <span className="font-body font-bold text-[20px] text-black">{duration}</span>
+        <span className="font-body text-[18px] text-[#050505]">{room}</span>
+      </div>
+      <Link href="/home#programme" className="bg-[#050505] rounded-full h-[52px] flex items-center justify-center w-full">
+        <span className="font-body text-[20px] text-white">Rejoindre</span>
+      </Link>
     </div>
   );
 }
@@ -90,8 +218,10 @@ function ActivityRow({ time, name, room, duration, hasBadge }: {
           <span className="font-body font-bold text-[20px] text-black whitespace-nowrap">{duration}</span>
         </div>
         {hasBadge && (
-          <div className="absolute flex items-center justify-center" style={{ inset: "60.28% -4.32% -13.18% 82.31%", containerType: "size" }}>
-            <div className="relative flex-none" style={{ height: "hypot(69.3994cqh,10.5742cqw)", width: "hypot(89.4258cqw,30.6006cqh)", transform: "rotate(12.86deg)" }}>
+          <div className="absolute flex items-center justify-center"
+            style={{ inset: "60.28% -4.32% -13.18% 82.31%", containerType: "size" }}>
+            <div className="relative flex-none"
+              style={{ height: "hypot(69.4cqh,10.6cqw)", width: "hypot(89.4cqw,30.6cqh)", transform: "rotate(12.86deg)" }}>
               <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/card-badge.svg" />
             </div>
           </div>
@@ -101,56 +231,9 @@ function ActivityRow({ time, name, room, duration, hasBadge }: {
   );
 }
 
-// ─── Mobile reco card ─────────────────────────────────────────────────────────
-function RecoCard({ name, duration, room }: { name: string; duration: string; room: string }) {
-  return (
-    <div className="bg-white border border-[#95989a] rounded-[16px] shadow-[0px_2px_5px_0px_rgba(0,0,0,0.05)] shrink-0 w-[162px] px-[11px] py-[12px] flex flex-col gap-[16px]">
-      <div className="flex flex-col items-center text-center mx-auto">
-        <span className="font-heading font-bold text-[24px] text-[#050505]">{name}</span>
-        <span className="font-body font-bold text-[20px] text-black">{duration}</span>
-        <span className="font-body text-[18px] text-[#050505]">{room}</span>
-      </div>
-      <Link href="/home#programme" className="bg-[#050505] rounded-full h-[52px] flex items-center justify-center w-full">
-        <span className="font-body text-[20px] text-white">Rejoindre</span>
-      </Link>
-    </div>
-  );
-}
-
-// ─── Desktop session card ─────────────────────────────────────────────────────
-function SessionCard({ time, duration, room, name, cta, img, dark, full }: {
-  time: string; duration: string; room: string; name: string; cta: string;
-  img: string; dark?: boolean; full?: boolean;
-}) {
-  return (
-    <article className={`relative overflow-hidden rounded-2xl p-6 ${dark ? "bg-[#2e7e33] text-white" : "bg-[#e8c0c4] text-[#050505]"}`}>
-      <img src={img} alt="" className="absolute top-4 right-4 h-14 w-14 object-contain drop-shadow-lg" />
-      <div className="text-2xl font-black leading-none font-heading">{time}</div>
-      <div className="mt-2 text-[11px] font-semibold tracking-wider opacity-70">{duration} · {room}</div>
-      <h3 className="mt-10 text-3xl font-black font-heading">{name}</h3>
-      <button className={`mt-5 inline-flex items-center rounded-full px-5 py-2 text-xs font-semibold transition ${full ? "bg-white text-[#050505]" : "bg-[#474194] text-white hover:opacity-90"}`}>{cta}</button>
-    </article>
-  );
-}
-
-// ─── Desktop reco card ────────────────────────────────────────────────────────
-function DesktopRecoCard({ time, duration, room, name, img, bg }: {
-  time: string; duration: string; room: string; name: string; img: string; bg: string;
-}) {
-  return (
-    <article className={`relative overflow-hidden rounded-2xl p-6 ${bg}`}>
-      <img src={img} alt="" className="absolute top-4 right-4 h-12 w-12 object-contain" />
-      <div className="text-xl font-black font-heading">{time}</div>
-      <div className="mt-1 text-[10px] font-semibold tracking-wider opacity-70">{duration} · {room}</div>
-      <h3 className="mt-8 text-2xl font-black font-heading">{name}</h3>
-      <button className="mt-5 inline-flex items-center rounded-full bg-[#050505] px-5 py-2 text-xs font-semibold text-white hover:opacity-90">Découvrir</button>
-    </article>
-  );
-}
-
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function HomePage() {
-  const { days, hours, minutes, seconds } = useCountdown();
+  const { days, hours } = useCountdown();
   const [prenom, setPrenom] = useState("");
 
   useEffect(() => {
@@ -162,49 +245,250 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white md:bg-[#f5eedb]">
+    <div className="min-h-screen bg-white md:bg-[#faf9f5]">
 
-      {/* ══════════════════════════════════════
-          MOBILE — Logo
-      ══════════════════════════════════════ */}
-      <div className="md:hidden flex items-center justify-center pt-10 pb-3 px-4">
-        <img src="/figma-assets/logo.png" alt="Solimouv'" className="h-6 w-auto" />
-      </div>
+      {/* ══════════════════════════════════════════════════════
+          DESKTOP LAYOUT — Figma 392-4403 (hidden on mobile)
+      ══════════════════════════════════════════════════════ */}
+      <div className="hidden md:block">
+        {/* Content container: 1280px max-width, 152px side padding */}
+        <div className="max-w-[1280px] mx-auto px-[152px] pt-[56px]">
 
-      {/* ══════════════════════════════════════
-          MOBILE — Greeting + Bell
-      ══════════════════════════════════════ */}
-      <div className="md:hidden flex items-center justify-between px-4 pb-4">
-        <div className="flex items-center gap-[9px]">
-          <SportSticker />
-          <div className="flex flex-col leading-6 text-[#1a1b19]">
-            <span className="font-heading text-[24px] font-bold">Bonjour{prenom ? ` ${prenom}` : ""},</span>
-            <span className="font-body text-[18px] whitespace-nowrap">Bienvenue sur ton espace.</span>
+          {/* ── Greeting row (373×64) ── */}
+          <div id="festival" className="flex items-center" style={{ width: 373 }}>
+            <SportStickerDesktop />
+            <div className="flex flex-col leading-6 text-[#050505]" style={{ marginLeft: 16, width: 209 }}>
+              <span className="font-heading font-bold" style={{ fontSize: 24 }}>
+                Bonjour{prenom ? ` ${prenom}` : ""},
+              </span>
+              <span className="font-body" style={{ fontSize: 18 }}>Bienvenue sur ton espace.</span>
+            </div>
+            <button
+              className="flex items-center justify-center rounded-full bg-black/10"
+              style={{ marginLeft: 45, width: 43, height: 40 }}
+              aria-label="Notifications"
+            >
+              <img alt="" style={{ width: 24, height: 24 }} src="/figma-assets/home/bell.svg" />
+            </button>
           </div>
+
+          {/* ── Hero card (979×421, #474194) ── */}
+          <div
+            id="programme"
+            className="relative bg-[#474194] overflow-visible mt-16"
+            style={{ width: "100%", height: 421, borderRadius: 32 }}
+          >
+            {/* Left badminton deco — overflows left edge */}
+            <div className="absolute overflow-hidden" style={{ left: -45, top: 41, width: 90.8, height: 70 }}>
+              <img alt="" className="block size-full object-contain" src="/figma-assets/home/mascot-sport.svg" />
+            </div>
+
+            {/* Text content — left side */}
+            <div className="absolute flex flex-col" style={{ left: 85, top: 32 }}>
+              {/* Title */}
+              <p className="font-body text-white" style={{ fontSize: 32, lineHeight: "32px" }}>Le Festival</p>
+              {/* White logo */}
+              <div style={{ marginTop: 8, width: 244, height: 40 }}>
+                <img alt="Solimouv'" className="block h-full w-auto" src="/figma-assets/home/logo-white.svg" />
+              </div>
+              {/* Description */}
+              <p className="font-body text-white" style={{ marginTop: 8, width: 244, fontSize: 18, lineHeight: "24px" }}>
+                Le sport pour toutes et tous, sans exception.
+              </p>
+            </div>
+
+            {/* Countdown — positioned at hero y=204 */}
+            <div className="absolute" style={{ left: 97.6, top: 204 }}>
+              <p className="font-body text-white text-center" style={{ fontSize: 18, lineHeight: "24px" }}>
+                Ça approche, plus que :
+              </p>
+              <div className="flex gap-2 mt-2">
+                <DesktopCountTile value={days} label="Jours" />
+                <DesktopCountTile value={hours} label="Heures" />
+              </div>
+            </div>
+
+            {/* CTA buttons — hero y=335 */}
+            <div className="absolute flex gap-2 items-center" style={{ left: 24, top: 335 }}>
+              <Link
+                href="/quiz"
+                className="flex items-center justify-center rounded-full bg-[#050505] text-white font-body hover:opacity-90 transition"
+                style={{ width: 148, height: 40, fontSize: 18 }}
+              >
+                Trouve ton sport
+              </Link>
+              <Link
+                href="#programme"
+                className="flex items-center justify-center rounded-full bg-white text-[#050505] font-body hover:opacity-90 transition"
+                style={{ width: 217, height: 40, fontSize: 18 }}
+              >
+                Découvrir le programme
+              </Link>
+            </div>
+
+            {/* Mascot triangle — right side (x=472, y=64, 424×358) */}
+            <div className="absolute overflow-hidden" style={{ left: 472, top: 0, width: 507, height: 421, borderRadius: "0 32px 32px 0" }}>
+              <div style={{ position: "absolute", left: 0, top: 64, width: 424, height: 358 }}>
+                <MascotTriangle />
+              </div>
+            </div>
+          </div>
+
+          {/* ── Two-column section (32px below hero) ── */}
+          <div className="flex mt-8" style={{ gap: 36 }}>
+
+            {/* Left: Tu es inscrit (478px wide, 532px tall) */}
+            <div
+              className="relative bg-[#2e7e33] flex-shrink-0 overflow-visible"
+              style={{ width: 478, minHeight: 532, borderRadius: 32 }}
+            >
+              {/* Mascot sport deco — overflows top */}
+              <div className="absolute overflow-hidden pointer-events-none"
+                style={{ left: 10, top: -111, width: 160, height: 142 }}>
+                <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/mascot-sport.svg" />
+              </div>
+
+              {/* Content */}
+              <div className="absolute" style={{ left: 19.4, top: 41.3, width: 439 }}>
+                {/* Heading */}
+                <div style={{ width: "100%", marginBottom: 0 }}>
+                  <p className="font-heading font-bold text-white text-center" style={{ fontSize: 32, lineHeight: "39px", width: "100%" }}>
+                    Tu es inscrit...
+                  </p>
+                  <p className="font-body text-white text-center" style={{ fontSize: 18, lineHeight: "24px" }}>
+                    Retrouve tes inscriptions
+                  </p>
+                </div>
+
+                {/* Activity rows with timeline */}
+                <div className="relative mt-8">
+                  {/* Timeline line */}
+                  <div className="absolute" style={{ left: 15.3, top: 163.94, width: 0.65, height: 288, borderLeft: "1px dashed rgba(255,255,255,0.4)" }} />
+
+                  <DesktopActivityRow time="10h30" name="Crossfit" room="Salle B" duration="30 min" />
+                  <DesktopActivityRow time="15h30" name="Box" room="Gymnase C" duration="30 min" hasBadge />
+
+                  {/* Add activity button */}
+                  <div className="flex items-start" style={{ marginTop: 24 }}>
+                    <div className="relative shrink-0" style={{ width: 32, height: 31, marginTop: 23 }}>
+                      <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/add-bullet.svg" />
+                    </div>
+                    <div
+                      className="bg-white border border-[#cdcdcd] rounded-[16px] shadow-[0px_2px_1px_0px_rgba(0,0,0,0.05)] flex items-center justify-center"
+                      style={{ marginLeft: 50, width: 389, height: 79 }}
+                    >
+                      <div className="border border-dashed border-[#95989a] rounded-[16px] flex items-center justify-center px-16 py-2">
+                        <span className="font-body text-[#8d8d8d]" style={{ fontSize: 20 }}>Ajouter une activité</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Pour vous (458px wide, 532px tall) */}
+            <div id="pour-vous" style={{ width: 458 }}>
+              {/* Header */}
+              <div style={{ paddingLeft: 36, paddingTop: 36, paddingRight: 36 }}>
+                <h2 className="font-heading font-bold text-[#050505] text-center" style={{ fontSize: 32, lineHeight: "32px", width: 386 }}>
+                  Pour vous
+                </h2>
+                <p className="font-body text-[#050505] text-center mt-2" style={{ fontSize: 18, width: 386 }}>
+                  On vous propose quelques activités qui vous correspondrais
+                </p>
+              </div>
+
+              {/* 2×2 grid of activity cards (343×343 at x=57.5, y=129) */}
+              <div
+                className="grid grid-cols-2"
+                style={{ marginTop: 57, marginLeft: 57.5, width: 343, height: 343, gap: 15 }}
+              >
+                <PourVousCard name="Danse" duration="30 min" room="Salle B" />
+                <PourVousCard name="Danse" duration="30 min" room="Salle B" />
+                <PourVousCard name="Natation" duration="120 min" room="Piscine" />
+                <PourVousCard name="Natation" duration="120 min" room="Piscine" />
+              </div>
+            </div>
+          </div>
+
+          {/* Spacer before footer */}
+          <div style={{ height: 80 }} />
         </div>
-        <button className="bg-black/10 rounded-full w-[43px] h-[43px] flex items-center justify-center shrink-0" aria-label="Notifications">
-          <img alt="" className="size-6" src="/figma-assets/home/bell.svg" />
-        </button>
+
+        {/* ── Desktop Footer (full width, #1f74bb) ── */}
+        <footer className="bg-[#1f74bb]" style={{ width: "100%", minHeight: 352 }}>
+          <div className="max-w-[1280px] mx-auto px-[48px] py-12 grid grid-cols-4 gap-8">
+            {/* Col 1: Logo + description */}
+            <div>
+              <div style={{ width: 143, height: 24 }}>
+                <img alt="Solimouv'" className="block h-full w-auto" src="/figma-assets/home/logo-footer.svg" />
+              </div>
+              <p className="text-white/90 mt-4" style={{ fontSize: 14, lineHeight: "20px", maxWidth: 200, fontFamily: "Barlow, sans-serif" }}>
+                SoliMouv&apos; connecte les motivés de sport autour d&apos;événements sociaux et inclusifs pour toutes et tous.
+              </p>
+            </div>
+            {/* Col 2: Navigation */}
+            <div>
+              <h4 className="text-white font-bold mb-4" style={{ fontSize: 16 }}>Navigation</h4>
+              <ul className="space-y-3" style={{ fontFamily: "Barlow, sans-serif", fontSize: 14 }}>
+                {["Contactez-nous", "A l'affiche", "Faire un Don", "Prochainement", "A Propos"].map((l) => (
+                  <li key={l}><a href="#" className="text-white/80 hover:text-white transition-colors">{l}</a></li>
+                ))}
+              </ul>
+            </div>
+            {/* Col 3: Légal */}
+            <div>
+              <h4 className="text-white font-bold mb-4" style={{ fontSize: 16 }}>Légal</h4>
+              <ul className="space-y-3" style={{ fontFamily: "Barlow, sans-serif", fontSize: 14 }}>
+                <li><Link href="/confidentialite" className="text-white/80 hover:text-white transition-colors">Politiques de confidentialité</Link></li>
+                <li><Link href="/cgu" className="text-white/80 hover:text-white transition-colors">Conditions d&apos;utilisation</Link></li>
+                <li><a href="#" className="text-white/80 hover:text-white transition-colors">Paramètres des cookies</a></li>
+              </ul>
+            </div>
+            {/* Col 4: Contact */}
+            <div>
+              <h4 className="text-white font-bold mb-4" style={{ fontSize: 16 }}>Contact</h4>
+              <div className="space-y-4" style={{ fontFamily: "Barlow, sans-serif", fontSize: 14 }}>
+                <div>
+                  <p className="text-white font-semibold">SoliMouv&apos;</p>
+                  <p className="text-white/70">unikspourlesport@yahoo.fr</p>
+                </div>
+                <div>
+                  <p className="text-white font-semibold">UpSport!</p>
+                  <p className="text-white/70">contact@unispourlesport.paris</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
 
-      {/* ══════════════════════════════════════
-          DESKTOP — Greeting text
-      ══════════════════════════════════════ */}
-      <section className="hidden md:block pt-8 pb-4">
-        <div className="mx-auto max-w-7xl px-8">
-          <h1 className="text-3xl md:text-4xl font-black font-heading text-[#050505]">Bonjour{prenom ? ` ${prenom}` : ""},</h1>
-          <p className="mt-1 text-sm text-gray-500">Voici ce qui vous attend cette semaine sur Solimouv.</p>
+      {/* ══════════════════════════════════════════════════════
+          MOBILE LAYOUT — Figma 337-12243 (hidden on desktop)
+      ══════════════════════════════════════════════════════ */}
+      <div className="md:hidden">
+        {/* Mobile logo */}
+        <div className="flex items-center justify-center pt-10 pb-3 px-4">
+          <img src="/figma-assets/logo.png" alt="Solimouv'" className="h-6 w-auto" />
         </div>
-      </section>
 
-      {/* ══════════════════════════════════════
-          HERO CARD (mobile: violet | desktop: gradient)
-      ══════════════════════════════════════ */}
-      <section id="festival" className="px-4 md:px-8 pb-0 md:pb-10">
-        <div className="mx-auto md:max-w-7xl">
+        {/* Mobile greeting + bell */}
+        <div className="flex items-center justify-between px-4 pb-4">
+          <div className="flex items-center gap-[9px]">
+            <SportSticker />
+            <div className="flex flex-col leading-6 text-[#1a1b19]">
+              <span className="font-heading text-[24px] font-bold">Bonjour{prenom ? ` ${prenom}` : ""},</span>
+              <span className="font-body text-[18px] whitespace-nowrap">Bienvenue sur ton espace.</span>
+            </div>
+          </div>
+          <button className="bg-black/10 rounded-full w-[43px] h-[43px] flex items-center justify-center shrink-0" aria-label="Notifications">
+            <img alt="" className="size-6" src="/figma-assets/home/bell.svg" />
+          </button>
+        </div>
 
-          {/* Mobile hero */}
-          <div className="md:hidden relative bg-[#474194] rounded-[32px] overflow-hidden flex flex-col items-center gap-9 pt-[22px] pb-[22px] px-4">
+        {/* Mobile hero violet */}
+        <div className="mx-4">
+          <div className="relative bg-[#474194] rounded-[32px] overflow-hidden flex flex-col items-center gap-9 pt-[22px] pb-[22px] px-4">
             <div className="absolute" style={{ width: 60, height: 46, top: 8, right: 9 }}>
               <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/hero-deco.svg" />
             </div>
@@ -231,79 +515,22 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-
-          {/* Desktop hero */}
-          <div className="hidden md:block relative overflow-hidden rounded-[2rem] shadow-[0_10px_30px_-12px_rgba(0,0,0,0.18)]"
-            style={{ background: "linear-gradient(135deg, #e8c0c8 0%, #c8a0d0 100%)" }}>
-            <div className="grid lg:grid-cols-[1.1fr_1fr] gap-8 p-10 md:p-14">
-              <div className="relative z-10">
-                <span className="inline-flex items-center rounded-full bg-white/70 px-4 py-1.5 text-[11px] font-bold tracking-widest text-[#474194]">LE FESTIVAL</span>
-                <h2 className="mt-6 text-5xl md:text-6xl font-black leading-none text-[#050505] font-heading">Le festival</h2>
-                <div className="mt-3">
-                  <img src="/figma-assets/home/logo-desktop-dark.png" alt="Solimouv'" className="h-16 md:h-20 w-auto" />
-                </div>
-                <p className="mt-6 max-w-md text-[#050505]/80 text-base leading-relaxed">
-                  Le rendez-vous sport, danse et culture de l&apos;année. Inscris-toi et rejoins une communauté qui bouge ensemble.
-                </p>
-                <div className="mt-8">
-                  <div className="text-[11px] font-bold tracking-widest text-[#050505]/60 mb-3">LE FESTIVAL COMMENCE DANS</div>
-                  <div className="flex gap-3">
-                    <CountBox value={days} label="JOURS" />
-                    <CountBox value={hours} label="HEURES" />
-                    <CountBox value={minutes} label="MINUTES" />
-                    <CountBox value={seconds} label="SECONDES" />
-                  </div>
-                </div>
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <Link href="/quiz" className="inline-flex items-center rounded-full bg-[#050505] px-7 py-3.5 text-sm font-semibold text-white hover:opacity-90 transition">Trouve ton sport</Link>
-                  <Link href="#programme" className="inline-flex items-center rounded-full bg-white/80 px-7 py-3.5 text-sm font-semibold text-[#050505] hover:opacity-90 transition">Découvrir le programme</Link>
-                </div>
-              </div>
-              <div className="relative hidden lg:block min-h-[320px]">
-                {[
-                  { src: "/figma-assets/home/sports/sport-rugby.png", style: { top: 16, left: 32, width: 112 } as React.CSSProperties, rotate: "-8deg" },
-                  { src: "/figma-assets/home/sports/sport-basket.png", style: { top: 8, left: 176, width: 112 } as React.CSSProperties, rotate: "6deg" },
-                  { src: "/figma-assets/home/sports/sport-badminton.png", style: { top: 40, right: 16, width: 96 } as React.CSSProperties, rotate: "12deg" },
-                  { src: "/figma-assets/home/sports/sport-tennis.png", style: { top: 176, left: 80, width: 128 } as React.CSSProperties, rotate: "-4deg" },
-                  { src: "/figma-assets/home/sports/sport-baseball.png", style: { top: 208, right: 48, width: 144 } as React.CSSProperties, rotate: "8deg" },
-                  { src: "/figma-assets/home/sports/sport-bowling.png", style: { bottom: 16, left: 128, width: 112 } as React.CSSProperties, rotate: "-10deg" },
-                ].map((s, i) => (
-                  <img key={i} src={s.src} alt="" className="absolute object-contain drop-shadow-lg"
-                    style={{ ...s.style, transform: `rotate(${s.rotate})` }} />
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
-      </section>
 
-      {/* ══════════════════════════════════════
-          GREEN SECTION — Inscriptions
-      ══════════════════════════════════════ */}
-      <section id="programme" className="mt-0 md:mt-8 md:px-8 md:pb-10">
-        <div className="mx-auto md:max-w-7xl">
-          <div className="bg-[#2e7e33] px-4 py-[34px] md:rounded-[2rem] md:p-12 relative overflow-visible">
-
-            {/* Mobile: mascot decoration (overflows top) */}
+        {/* Mobile green section */}
+        <section id="programme" className="mt-0">
+          <div className="bg-[#2e7e33] px-4 py-[34px] relative overflow-visible">
             <div className="md:hidden absolute overflow-clip pointer-events-none" style={{ width: 132, height: 117, left: 8, top: -103 }}>
               <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/mascot-sport.svg" />
             </div>
-
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mb-7">
-              <div className="text-white">
-                <h2 className="font-heading font-bold text-[32px] md:text-5xl leading-8 md:leading-none">Vous êtes inscrit...</h2>
-                <p className="font-body text-[18px] mt-1">Retrouver vos inscriptions</p>
-              </div>
-              <a href="#" className="hidden md:block text-sm font-semibold text-white hover:opacity-80 transition">Voir tout l&apos;agenda →</a>
+            <div className="flex flex-col gap-2 mb-7">
+              <h2 className="font-heading font-bold text-[32px] leading-8 text-white">Tu es inscrit...</h2>
+              <p className="font-body text-[18px] text-white">Retrouve tes inscriptions</p>
             </div>
-
-            {/* Mobile: activity rows with timeline */}
-            <div className="md:hidden flex flex-col gap-6 relative">
-              {/* Timeline line */}
+            <div className="flex flex-col gap-6 relative">
               <div className="absolute left-[12px] top-8 bottom-16 w-px border-l border-dashed border-white/40" />
               <ActivityRow time="10h30" name="Crossfit" room="Salle B" duration="30 min" />
               <ActivityRow time="15h30" name="Box" room="Gymnase C" duration="30 min" hasBadge />
-              {/* Add activity */}
               <div className="flex items-start justify-between gap-2">
                 <div className="relative shrink-0 mt-4" style={{ width: 26, height: 26 }}>
                   <img alt="" className="absolute inset-0 block size-full max-w-none" src="/figma-assets/home/add-bullet.svg" />
@@ -315,30 +542,15 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-
-            {/* Desktop: sessions grid */}
-            <div className="hidden md:grid gap-5 md:grid-cols-3">
-              <SessionCard time="10h30" duration="60 MIN" room="SALLE B" name="CrossFit" cta="Rejoindre" img="/figma-assets/home/sports/sport-rugby.png" />
-              <SessionCard time="15h30" duration="45 MIN" room="SALLE A" name="Cardio" cta="Rejoindre" img="/figma-assets/home/sports/sport-basket.png" dark />
-              <SessionCard time="17h00" duration="60 MIN" room="SALLE C" name="Yoga" cta="Presque complet" img="/figma-assets/home/sports/sport-tennis.png" dark full />
-            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ══════════════════════════════════════
-          POUR VOUS
-      ══════════════════════════════════════ */}
-      <section id="pour-vous" className="px-4 py-8 md:px-8 md:py-10">
-        <div className="mx-auto md:max-w-7xl">
-
-          {/* Mobile */}
-          <div className="md:hidden flex flex-col gap-5">
+        {/* Mobile pour vous */}
+        <section id="pour-vous" className="px-4 py-8">
+          <div className="flex flex-col gap-5">
             <div className="flex flex-col items-center">
               <h2 className="font-heading font-bold text-[32px] text-[#050505] text-center">Pour vous</h2>
-              <p className="font-body text-[18px] text-[#050505] text-center">
-                On vous propose quelques activités<br />qui vous correspondrais
-              </p>
+              <p className="font-body text-[18px] text-[#050505] text-center">On vous propose quelques activités<br />qui vous correspondrais</p>
             </div>
             <div className="flex gap-3 overflow-x-auto pb-1 -mx-4 px-4">
               <RecoCard name="Danse" duration="30 min" room="Salle B" />
@@ -346,87 +558,31 @@ export default function HomePage() {
               <RecoCard name="Yoga" duration="60 min" room="Salle C" />
             </div>
           </div>
+        </section>
 
-          {/* Desktop */}
-          <div className="hidden md:block rounded-[2rem] p-10 md:p-12 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.14)]"
-            style={{ background: "linear-gradient(135deg, #f0d4d8 0%, #e8c8d8 100%)" }}>
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-2">
-              <div>
-                <span className="text-[11px] font-bold tracking-widest text-[#474194]">RECOMMANDATIONS</span>
-                <h2 className="mt-3 text-4xl md:text-5xl font-black text-[#050505] font-heading">Pour vous</h2>
-                <p className="mt-3 text-sm text-[#050505]/80">Choisis parmi ces propositions adaptées à tes envies.</p>
+        {/* Mobile footer */}
+        <footer className="bg-[#1f74bb] mt-4 mx-4 rounded-[32px] mb-4">
+          <div className="flex flex-col gap-10 items-center px-5 py-12">
+            <div className="h-6 w-[143px]">
+              <img alt="Solimouv'" className="block h-full w-full object-contain" src="/figma-assets/home/logo-footer.svg" />
+            </div>
+            <div className="flex flex-col items-center gap-4 text-[18px] text-white text-center" style={{ fontFamily: "Barlow, sans-serif" }}>
+              <Link href="/contact" className="hover:opacity-70 transition-opacity">Contactez-nous</Link>
+              <a href="#programme" className="hover:opacity-70 transition-opacity">A l&apos;affiche</a>
+              <Link href="/a-propos" className="hover:opacity-70 transition-opacity">A Propos</Link>
+              <Link href="/associations" className="hover:opacity-70 transition-opacity">Associations</Link>
+            </div>
+            <div className="w-full flex flex-col gap-5 items-center">
+              <div className="w-full h-px bg-white/30" />
+              <div className="flex flex-col gap-3 items-center text-[18px] text-white text-center font-light" style={{ fontFamily: "Barlow, sans-serif" }}>
+                <Link href="/confidentialite" className="underline hover:opacity-70">Politique de confidentialité</Link>
+                <Link href="/cgu" className="underline hover:opacity-70">Conditions d&apos;utilisation</Link>
               </div>
-              <a href="#" className="text-sm font-semibold text-[#050505] hover:opacity-70">Tout explorer →</a>
-            </div>
-            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              <DesktopRecoCard time="9h00" duration="50 MIN" room="SALLE B" name="Danse" img="/figma-assets/home/sports/sport-badminton.png" bg="bg-rose-100" />
-              <DesktopRecoCard time="11h30" duration="45 MIN" room="PISCINE" name="Natation" img="/figma-assets/home/sports/sport-basket.png" bg="bg-purple-100" />
-              <DesktopRecoCard time="14h00" duration="60 MIN" room="COURT 2" name="Tennis" img="/figma-assets/home/sports/sport-tennis.png" bg="bg-amber-100" />
-              <DesktopRecoCard time="18h00" duration="75 MIN" room="STADE" name="Baseball" img="/figma-assets/home/sports/sport-baseball.png" bg="bg-pink-100" />
+              <p className="font-light text-[18px] text-white" style={{ fontFamily: "Barlow, sans-serif" }}>© 2026 Up Sport! Tous droits réservés.</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════
-          DESKTOP — CTA signup section
-      ══════════════════════════════════════ */}
-      <section className="hidden md:block px-8 pb-10">
-        <div className="mx-auto max-w-7xl rounded-[2.5rem] p-10 lg:p-16 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.18)]"
-          style={{ background: "linear-gradient(135deg, #e8c0c8 0%, #c8a0d0 100%)" }}>
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
-            <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-[#050505]/70">Inscriptions ouvertes</span>
-              <h2 className="mt-3 text-4xl lg:text-5xl font-black font-heading text-[#050505]">Crée ton compte et compose ton festival sur mesure.</h2>
-              <p className="mt-5 text-base text-[#050505]/80 leading-relaxed">Quelques questions, et on te propose un programme personnalisé selon ton rythme, ton niveau et tes envies.</p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link href="/quiz" className="inline-flex items-center rounded-full bg-[#474194] px-6 py-3.5 text-sm font-bold text-white hover:opacity-90 transition">Trouve ton sport</Link>
-                <Link href="/compte" className="inline-flex items-center rounded-full border border-[#050505]/20 bg-white/40 px-6 py-3.5 text-sm font-semibold text-[#050505] hover:bg-white/60 transition">Mon espace</Link>
-              </div>
-            </div>
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <div className="text-sm font-semibold text-gray-500">Étape 1 — Quel type de sport te donne envie ?</div>
-              <div className="mt-5 space-y-2.5">
-                {["Sports collectifs", "Arts martiaux / Combats", "Danse / Expression", "Plein air / Nature", "Bien-être / Yoga"].map((opt, i) => (
-                  <Link key={opt} href="/quiz"
-                    className={`block w-full rounded-xl border px-4 py-3 text-left text-sm font-medium transition ${i === 4 ? "bg-[#474194] text-white border-[#474194]" : "border-gray-200 hover:border-gray-400 text-[#050505]"}`}>
-                    {opt}
-                  </Link>
-                ))}
-              </div>
-              <div className="mt-6 flex justify-end">
-                <Link href="/quiz" className="rounded-full bg-[#050505] px-5 py-2.5 text-sm font-semibold text-white">Commencer →</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════
-          FOOTER (blue) — mobile + desktop
-      ══════════════════════════════════════ */}
-      <footer className="bg-[#1f74bb] mt-4 md:mx-8 md:mb-8 md:rounded-[32px]">
-        <div className="flex flex-col gap-10 items-center px-5 py-12">
-          <div className="h-6 w-[143px]">
-            <img alt="Solimouv'" className="block h-full w-full object-contain" src="/figma-assets/home/logo-footer.svg" />
-          </div>
-          <div className="flex flex-col items-center gap-4 text-[18px] text-white text-center" style={{ fontFamily: "Barlow, sans-serif" }}>
-            <Link href="/contact" className="hover:opacity-70 transition-opacity">Contactez-nous</Link>
-            <Link href="#programme" className="hover:opacity-70 transition-opacity">A l&apos;affiche</Link>
-            <Link href="/a-propos" className="hover:opacity-70 transition-opacity">A Propos</Link>
-            <Link href="/associations" className="hover:opacity-70 transition-opacity">Associations</Link>
-          </div>
-          <div className="w-full flex flex-col gap-5 items-center">
-            <div className="w-full h-px bg-white/30" />
-            <div className="flex flex-col gap-3 items-center text-[18px] text-white text-center font-light" style={{ fontFamily: "Barlow, sans-serif" }}>
-              <Link href="/confidentialite" className="underline hover:opacity-70 transition-opacity">Politique de confidentialité</Link>
-              <Link href="/cgu" className="underline hover:opacity-70 transition-opacity">Conditions d&apos;utilisation</Link>
-            </div>
-            <p className="font-light text-[18px] text-white" style={{ fontFamily: "Barlow, sans-serif" }}>© 2026 Up Sport! Tous droits réservés.</p>
-          </div>
-        </div>
-      </footer>
-
+        </footer>
+      </div>
     </div>
   );
 }

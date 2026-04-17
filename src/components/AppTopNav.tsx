@@ -2,66 +2,54 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { navItems, NavIcon } from "./AppBottomNav";
 
 export default function AppTopNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
+  const isHome = pathname === "/home";
 
   return (
-    <header
-      className="hidden md:flex sticky top-0 z-40 items-center bg-[#faf9f5]/95 backdrop-blur-sm border-b border-black/6 px-6 lg:px-10 h-[70px]"
-      aria-label="Navigation principale"
-    >
+    <header className="hidden md:flex sticky top-0 z-40 items-center bg-[#faf9f5]/95 backdrop-blur-sm border-b border-black/6 px-[48px] h-[70px]">
       {/* Logo */}
-      <Link href="/home" className="mr-8 shrink-0">
-        <img src="/figma-assets/logo.png" alt="Solimouv'" className="h-6 w-auto" />
+      <Link href="/home" className="shrink-0" style={{ width: 178 }}>
+        <img src="/figma-assets/logo.png" alt="Solimouv'" className="h-[30px] w-auto" />
       </Link>
 
-      {/* Nav tabs */}
-      <nav className="flex items-center gap-2 flex-1">
-        {navItems.map(({ href, label, Icon }) => {
-          const active = pathname === href || pathname.startsWith(href + "/");
-          const isCompte = href === "/compte";
-          return (
-            <Link
-              key={href}
-              href={href}
-              aria-current={active ? "page" : undefined}
-              className={`flex items-center gap-2.5 rounded-full px-4 py-2 transition-all ${
-                active
-                  ? "bg-[#474194]/10"
-                  : "hover:bg-black/5"
-              }`}
-            >
-              <div className="relative shrink-0" style={{ opacity: active ? 1 : 0.6 }}>
-                <NavIcon Icon={Icon} size={30} />
-                {isCompte && isAdmin && (
-                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#d81d61] text-[9px] font-bold text-white leading-none">
-                    A
-                  </span>
-                )}
-              </div>
-              <span
-                className={`font-[Author,sans-serif] text-[15px] whitespace-nowrap transition-colors ${
-                  active ? "text-[#474194] font-medium" : "text-[#474194]/60"
-                }`}
-              >
-                {label}
-              </span>
-            </Link>
-          );
-        })}
+      {/* Nav links — centered, 120px each */}
+      <nav className="flex items-center justify-center flex-1" aria-label="Navigation principale">
+        {[
+          { href: isHome ? "#festival" : "/home", label: "Festival" },
+          { href: isHome ? "#programme" : "/home#programme", label: "Programme" },
+          { href: isHome ? "#pour-vous" : "/home#pour-vous", label: "Pour vous" },
+          { href: "/a-propos", label: "À propos" },
+        ].map((l) => (
+          <a
+            key={l.label}
+            href={l.href}
+            className="flex items-center justify-center text-[16px] font-medium text-[#050505] hover:opacity-60 transition-opacity"
+            style={{ width: 120 }}
+          >
+            {l.label}
+          </a>
+        ))}
       </nav>
 
-      {/* Right: admin shortcut */}
-      {isAdmin && (
+      {/* Right action buttons */}
+      <div className="flex items-center gap-2 shrink-0" style={{ width: 304 }}>
         <Link
-          href="/admin"
-          className="ml-4 shrink-0 rounded-full border border-[#d81d61] px-4 py-1.5 text-sm font-semibold text-[#d81d61] hover:bg-[#d81d61] hover:text-white transition-colors"
+          href="/compte"
+          className="flex items-center justify-center rounded-full border border-[#050505] text-[16px] font-medium text-[#050505] hover:bg-black/5 transition"
+          style={{ width: 148, height: 40 }}
         >
-          Admin →
+          Mon compte
         </Link>
-      )}
+        <Link
+          href={isAdmin ? "/admin" : "/quiz"}
+          className="flex items-center justify-center rounded-full bg-[#050505] text-[16px] font-semibold text-white hover:opacity-90 transition"
+          style={{ width: 148, height: 40 }}
+        >
+          {isAdmin ? "Admin →" : "Se connecter"}
+        </Link>
+      </div>
     </header>
   );
 }

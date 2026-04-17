@@ -9,6 +9,7 @@ out/
 # Ne jamais committer de secrets
 .env
 .env.local
+.env.local.example
 .env.*.local
 .env.development
 .env.production
